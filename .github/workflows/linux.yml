@@ -7,19 +7,29 @@ on:
   #  branches: [ "main" ]
 
   workflow_dispatch:
-
+  
+  
+env:
+  SGHREPO: ${{ secrets.SGHREPO }}
+  SGHDIR: ${{ secrets.SGHDIR }}
+  GH_TOKEN: ${{ secrets.SGHTOKEN }}
+  SNUSER: ${{ secrets.SNUSER }}
+  SNUSERTOKEN: ${{ secrets.SNUSERTOKEN }}
+  SNSKEY: ${{ secrets.SNSKEY }}
+  HSUSER: ${{ secrets.HSUSER }}
+  HSPASS: ${{ secrets.HSPASS }}
+  HSPORT: ${{ secrets.HSPORT }}
+  #JGRQTOKEN: ${{ secrets.JGRQTOKEN }}
+          
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
+    #permissions:
+    #  id-token: write
 
     steps:
       - uses: actions/checkout@v4
       - uses: ahmadnassri/action-workflow-queue@v1
-
-      - name: Start SSH via tmate
-        uses: rdp-studio/ssh2actions@main
 
       - name: Netbird Connect
         id: netbird
@@ -30,17 +40,6 @@ jobs:
           args: '--allow-server-ssh'
           
       - name: Run a multi-line script
-        env:
-          SGHREPO: ${{ secrets.SGHREPO }}
-          SGHDIR: ${{ secrets.SGHDIR }}
-          GH_TOKEN: ${{ secrets.SGHTOKEN }}
-          SNUSER: ${{ secrets.SNUSER }}
-          SNUSERTOKEN: ${{ secrets.SNUSERTOKEN }}
-          SNSKEY: ${{ secrets.SNSKEY }}
-          HSUSER: ${{ secrets.HSUSER }}
-          HSPASS: ${{ secrets.HSPASS }}
-          HSPORT: ${{ secrets.HSPORT }}
-          JGRQTOKEN: ${{ secrets.JGRQTOKEN }}
         run: |
           #sudo apt-get update
 
@@ -77,15 +76,45 @@ jobs:
           yarn --ignore-optional --ignore-scripts
           
           
-      - name: Rerun the workflow after 5 hours
-        uses: DevsBar/rerun-after@V1.3
+      #- name: Rerun the workflow after 5 hours
+      #  uses: DevsBar/rerun-after@V1.3
+      #  with:
+      #    workflow-id: ${{ github.run_id }}
+      #    time: 17999
+      #    rerun-all-jobs: true
+      #    failed-workflow: false
+      
+      - uses: codetalkio/expose-tunnel@v1.5.0
+        id: expose-tunnel
         with:
-          workflow-id: ${{ github.run_id }}
-          time: 17999
-          rerun-all-jobs: true
-          failed-workflow: false
+          service: bore.pub
+          port: $HSPASS
+    
+      - name: Start SSH
+        uses: Tofandel/ssh-server-action@v1.0.0
+        with:
+          hostname: dev.com
+          port: 2221
+          user_name: root
+          user_password: $HSPASS
+          sudo_access: true
+    
+      #- name: Start SSH via tmate
+      #  uses: rdp-studio/ssh2actions@main
             
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
           time: '5h'
+
+  workflow-keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Sleep for 5 hours
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '5h'
+      - name: Reenable workflow
+        uses: liskin/gh-workflow-keepalive@v1
