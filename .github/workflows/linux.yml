@@ -40,8 +40,8 @@ jobs:
           mkdir -p ~/.config/fish && echo "source /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.fish" >> ~/.config/fish/config.fish
           source ~/.bashrc
   
-          gh auth login --with-token "$sghtoken"
-          gh repo clone $sghrepo && cd "$sghdir"
+          #gh auth login --with-token "$sghtoken"
+          #gh repo clone $sghrepo && cd "$sghdir"
           
           
       - name: Rerun the workflow after 5 hours
