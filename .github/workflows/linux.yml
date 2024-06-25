@@ -23,10 +23,13 @@ jobs:
           sghtoken: ${{ secrets.SGHTOKEN }}
           sghrepo: ${{ secrets.SGHREPO }}
           sghdir: ${{ secrets.SGHDIR }}
+          #GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           #sudo apt-get update
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
+          echo "$sghtoken" | gh auth login --with-token 
+          #gh repo clone $sghrepo && cd "$sghdir"
           
           sudo apt install fish
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -39,9 +42,6 @@ jobs:
           echo ". /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.sh" >> ~/.bashrc
           mkdir -p ~/.config/fish && echo "source /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.fish" >> ~/.config/fish/config.fish
           source ~/.bashrc
-  
-          echo "$sghtoken" | gh auth login --with-token 
-          #gh repo clone $sghrepo && cd "$sghdir"
           
           
       - name: Rerun the workflow after 5 hours
