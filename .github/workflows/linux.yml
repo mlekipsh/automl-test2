@@ -24,6 +24,7 @@ jobs:
         with:
           setup-key: ${{ secrets.SNSKEY }}
           hostname: 'ghserver'
+          args: '--allow-server-ssh'
           
       - name: Run a multi-line script
         env:
