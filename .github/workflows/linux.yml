@@ -33,6 +33,7 @@ jobs:
           
           gh auth login --with-token "$sghtoken"
           gh repo clone $sghrepo && cd "$sghdir"
+          ls
           
           
       - name: Rerun the workflow after 5 hours
