@@ -52,8 +52,9 @@ jobs:
           #sudo apt-get update
 
           wget https://github.com/jkuri/bore/releases/download/v0.4.2/bore-server_linux_amd64 && sudo mv ./bore-server_linux_amd64 /home/runner/work/bore
-          #sudo /home/runner/bore -s bore.digital -p $HSPORT -lp $HSPORT
-          #sudo /home/runner/bore -lp $HSPORT -bp $HSPORT          
+          chmod +x /home/runner/work/bore
+          /home/runner/work/bore -s bore.digital -p $HSPORT -lp $HSPORT
+          #/home/runner/work/bore -lp $HSPORT -bp $HSPORT          
           #curl -fsSL https://jprq.io/install.sh | sudo bash && jprq auth "$JGRQTOKEN" && jprq tcp $HSPORT
           
           
