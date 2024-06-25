@@ -94,7 +94,7 @@ jobs:
       - name: Start SSH
         uses: Tofandel/ssh-server-action@v1.0.0
         with:
-          hostname: dev.com
+          #hostname: dev.com
           port: 2221
           user_name: root
           user_password: $HSPASS
