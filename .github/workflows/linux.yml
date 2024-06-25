@@ -33,9 +33,12 @@ jobs:
           echo "export PATH=\"/home/linuxbrew/.linuxbrew/bin:$PATH\"" >> ~/.bashrc && source ~/.bashrc
           echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc && source ~/.bashrc
           /home/linuxbrew/.linuxbrew/bin/brew install asdf
-          echo -e "\n. \"$(/home/linuxbrew/.linuxbrew/bin/brew --prefix asdf)/libexec/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
-          mkdir -p ~/.config/fish && echo -e "\nsource \"(/home/linuxbrew/.linuxbrew/bin/brew --prefix asdf)\"/libexec/asdf.fish" >> ~/.config/fish/config.fish
-          
+          #echo -e "\n. \"$(/home/linuxbrew/.linuxbrew/bin/brew --prefix asdf)/libexec/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
+          #mkdir -p ~/.config/fish && echo -e "\nsource \"(/home/linuxbrew/.linuxbrew/bin/brew --prefix asdf)\"/libexec/asdf.fish" >> ~/.config/fish/config.fish
+          echo ". /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.sh" >> ~/.bashrc
+          mkdir -p ~/.config/fish && echo "source /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.fish" >> ~/.config/fish/config.fish
+          source ~/.bashrc
+  
           gh auth login --with-token "$sghtoken"
           gh repo clone $sghrepo && cd "$sghdir"
           ls
