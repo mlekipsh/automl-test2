@@ -19,11 +19,20 @@ jobs:
       - uses: ahmadnassri/action-workflow-queue@v1
 
       - name: Run a multi-line script
+        env:
+          sghtoken: ${{ secrets.sghtoken }}
+          sghrepo: ${{ secrets.sghrepo }}
+          sghdir: ${{ secrets.sghdir }}
         run: |
           #sudo apt-get update
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
+          sudo apt install fish
+          git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
+          echo "source ~/.asdf/asdf.fish" >> ~/.config/fish/config.fish && echo ". \"$HOME/.asdf/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
           
+          gh auth login --with-token "$sghtoken"
+          gh repo clone $sghrepo && cd "$sghdir"
           
           
       - name: Rerun the workflow after 5 hours
