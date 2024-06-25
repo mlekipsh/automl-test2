@@ -25,9 +25,12 @@ jobs:
           GH_TOKEN: ${{ secrets.SGHTOKEN }}
           SNUSER: ${{ secrets.SNUSER }}
           SNUSERTOKEN: ${{ secrets.SNUSERTOKEN }}
+          SNSKEY: ${{ secrets.SNSKEY }}
         run: |
           #sudo apt-get update
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
+          netbird up --setup-key $SNSKEY
+          
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth status
           gh repo clone $SGHREPO && cd "$SGHDIR"
