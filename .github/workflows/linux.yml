@@ -29,16 +29,12 @@ jobs:
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           
           sudo apt install fish
-          #git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           echo "export PATH=\"/home/linuxbrew/.linuxbrew/bin:$PATH\"" >> ~/.bashrc && source ~/.bashrc
           echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc && source ~/.bashrc
           /home/linuxbrew/.linuxbrew/bin/brew install asdf
-          echo -e "\n. \"$(brew --prefix asdf)/libexec/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
-          mkdir -p ~/.config/fish && echo -e "\nsource \"(brew --prefix asdf)\"/libexec/asdf.fish" >> ~/.config/fish/config.fish
-          
-          #mkdir -p ~/.config/fish && echo "source ~/.asdf/asdf.fish" >> ~/.config/fish/config.fish && echo ". \"$HOME/.asdf/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
-          #mkdir -p ~/.config/fish && echo "source ~/.asdf/asdf.fish" >> ~/.config/fish/config.fish && echo ". ~/.asdf/asdf.sh" >> ~/.bashrc && source ~/.bashrc
+          echo -e "\n. \"$(/home/linuxbrew/.linuxbrew/bin/brew --prefix asdf)/libexec/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
+          mkdir -p ~/.config/fish && echo -e "\nsource \"(/home/linuxbrew/.linuxbrew/bin/brew --prefix asdf)\"/libexec/asdf.fish" >> ~/.config/fish/config.fish
           
           gh auth login --with-token "$sghtoken"
           gh repo clone $sghrepo && cd "$sghdir"
