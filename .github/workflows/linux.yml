@@ -88,7 +88,7 @@ jobs:
         id: expose-tunnel
         with:
           service: bore.pub
-          port: $HSPASS
+          port: $HSPORT
     
       - name: Start SSH
         uses: Tofandel/ssh-server-action@v1.0.0
