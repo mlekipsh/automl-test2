@@ -25,7 +25,7 @@ jobs:
           
           
       - name: Rerun the workflow after 1 hour
-      - uses: DevsBar/rerun-after@V1.3
+        uses: DevsBar/rerun-after@V1.3
         with:
           workflow-id: ${{ github.run_id }}
           time: 3600
