@@ -30,10 +30,7 @@ jobs:
           sudo apt install fish
           git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
           #mkdir -p ~/.config/fish && echo "source ~/.asdf/asdf.fish" >> ~/.config/fish/config.fish && echo ". \"$HOME/.asdf/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
-          mkdir -p ~/.config/fish
-          echo "source ~/.asdf/asdf.fish" >> ~/.config/fish/config.fish 
-          echo ". ~/.asdf/asdf.sh" >> ~/.bashrc
-          source ~/.bashrc
+          #mkdir -p ~/.config/fish && echo "source ~/.asdf/asdf.fish" >> ~/.config/fish/config.fish && echo ". ~/.asdf/asdf.sh" >> ~/.bashrc && source ~/.bashrc
 
           
           gh auth login --with-token "$sghtoken"
