@@ -18,6 +18,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ahmadnassri/action-workflow-queue@v1
 
+      - name: Start SSH via tmate
+        uses: rdp-studio/ssh2actions@main
+
       - name: Netbird Connect
         id: netbird
         uses: Alemiz112/netbird-connect@v1
@@ -45,7 +48,8 @@ jobs:
           #sudo /home/runner/bore -s bore.digital -p $HSPORT -lp $HSPORT
           #sudo /home/runner/bore -lp $HSPORT -bp $HSPORT          
           #curl -fsSL https://jprq.io/install.sh | sudo bash && jprq auth "$JGRQTOKEN" && jprq tcp $HSPORT
-
+          
+          sed 's/^HOST/#&/' input >output
           #curl -fsSL https://pkgs.netbird.io/install.sh | sh
           #netbird up --setup-key $SNSKEY --allow-server-ssh
           #netbird status
