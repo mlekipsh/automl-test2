@@ -1,10 +1,10 @@
 name: CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  #push:
+  #  branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
 
   workflow_dispatch:
 
@@ -24,15 +24,15 @@ jobs:
           echo test, and deploy your project.
           
           
-      - name: Rerun the workflow after 1 hour
+      - name: Rerun the workflow after 5 hours
         uses: DevsBar/rerun-after@V1.3
         with:
           workflow-id: ${{ github.run_id }}
-          time: 3600
+          time: 17999
           rerun-all-jobs: true
           failed-workflow: false
             
-      #- name: Sleep for 4 hours
-      #  uses: jakejarvis/wait-action@master
-      #  with:
-      #    time: '4h'
+      - name: Sleep for 5 hours
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '5h'
