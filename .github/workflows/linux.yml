@@ -20,8 +20,9 @@ jobs:
 
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          sudo apt-get update
+          curl -fsSL https://pkgs.netbird.io/install.sh | sh
+          
           
           
       - name: Rerun the workflow after 5 hours
