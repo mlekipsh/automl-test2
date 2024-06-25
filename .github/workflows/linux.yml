@@ -31,7 +31,7 @@ jobs:
           sudo apt install fish
           #git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          #echo "export PATH=\"$HOME/.linuxbrew/bin:$PATH\"" >> ~/.bashrc && source ~/.bashrc
+          echo "export PATH=\"$HOME/.linuxbrew/bin:$PATH\"" >> ~/.bashrc && source ~/.bashrc
           echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc && source ~/.bashrc
           brew install asdf
           echo -e "\n. \"$(brew --prefix asdf)/libexec/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
