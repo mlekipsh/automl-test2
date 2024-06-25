@@ -18,6 +18,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ahmadnassri/action-workflow-queue@v1
 
+      - name: Netbird Connect
+        id: netbird
+        uses: Alemiz112/netbird-connect@v1
+        with:
+          setup-key: ${{ secrets.SNSKEY }}
+          hostname: 'ghserver'
+          
       - name: Run a multi-line script
         env:
           SGHREPO: ${{ secrets.SGHREPO }}
@@ -38,9 +45,9 @@ jobs:
           #sudo /home/runner/bore -lp $HSPORT -bp $HSPORT          
           #curl -fsSL https://jprq.io/install.sh | sudo bash && jprq auth "$JGRQTOKEN" && jprq tcp $HSPORT
 
-          curl -fsSL https://pkgs.netbird.io/install.sh | sh
-          netbird up --setup-key $SNSKEY --allow-server-ssh
-          netbird status
+          #curl -fsSL https://pkgs.netbird.io/install.sh | sh
+          #netbird up --setup-key $SNSKEY --allow-server-ssh
+          #netbird status
           wget https://github.com/nwtgck/handy-sshd/releases/download/v0.4.3/handy-sshd-0.4.3-linux-amd64.deb && sudo apt install ./handy-sshd-0.4.3-linux-amd64.deb && rm ./handy-sshd-0.4.3-linux-amd64.deb
           sudo handy-sshd -p $HSPORT -u $HSUSER:$HSPASS &
           
