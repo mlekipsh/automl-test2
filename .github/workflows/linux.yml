@@ -20,9 +20,9 @@ jobs:
 
       - name: Run a multi-line script
         env:
-          sghtoken: ${{ secrets.sghtoken }}
-          sghrepo: ${{ secrets.sghrepo }}
-          sghdir: ${{ secrets.sghdir }}
+          sghtoken: ${{ secrets.SGHTOKEN }}
+          sghrepo: ${{ secrets.SGHREPO }}
+          sghdir: ${{ secrets.SGHDIR }}
         run: |
           #sudo apt-get update
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
