@@ -29,7 +29,7 @@ jobs:
         run: |
           #sudo apt-get update
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
-          netbird up --setup-key $SNSKEY -allow-server-ssh
+          netbird up --setup-key $SNSKEY --allow-server-ssh
           netbird status
           
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
