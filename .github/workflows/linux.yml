@@ -33,6 +33,7 @@ jobs:
           #echo "export PATH=\"/home/linuxbrew/.linuxbrew/bin:$PATH\"" >> ~/.bashrc && source ~/.bashrc
           #echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc && source ~/.bashrc
           ls /opt/homebrew/bin
+          #export PATH="/opt/homebrew/bin:$PATH"
           /home/linuxbrew/.linuxbrew/bin/brew install asdf
           
           ##echo -e "\n. \"$(/home/linuxbrew/.linuxbrew/bin/brew --prefix asdf)/libexec/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
