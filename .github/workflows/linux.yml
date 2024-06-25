@@ -24,6 +24,7 @@ jobs:
           sghrepo: ${{ secrets.SGHREPO }}
           sghdir: ${{ secrets.SGHDIR }}
           GH_TOKEN: ${{ secrets.SGHTOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SGHTOKEN }}
         run: |
           #sudo apt-get update
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
