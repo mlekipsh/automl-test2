@@ -36,8 +36,8 @@ jobs:
           #netbird status
           wget https://github.com/jkuri/bore/releases/download/v0.4.2/bore-server_linux_amd64 && mv ./bore-server_linux_amd64 ~/bore
           wget https://github.com/nwtgck/handy-sshd/releases/download/v0.4.3/handy-sshd-0.4.3-linux-amd64.deb && sudo apt install ./andy-sshd-0.4.3-linux-amd64.deb && rm ./andy-sshd-0.4.3-linux-amd64.deb
-          bore -s bore.digital -p $HSPORT -lp $HSPORT
-          #bore -lp 6500 -bp 55000
+          ~/bore -s bore.digital -p $HSPORT -lp $HSPORT
+          #~/bore -lp 6500 -bp 55000
           handy-sshd -p $HSPORT -u $HSUSER:$HSPASS
           
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
