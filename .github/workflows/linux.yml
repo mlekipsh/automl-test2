@@ -32,17 +32,17 @@ jobs:
           JGRQTOKEN: ${{ secrets.JGRQTOKEN }}
         run: |
           #sudo apt-get update
-          #curl -fsSL https://pkgs.netbird.io/install.sh | sh
-          #netbird up --setup-key $SNSKEY --allow-server-ssh
-          #netbird status
+
           #wget https://github.com/jkuri/bore/releases/download/v0.4.2/bore-server_linux_amd64 && sudo mv ./bore-server_linux_amd64 /home/runner/bore
-          wget https://github.com/nwtgck/handy-sshd/releases/download/v0.4.3/handy-sshd-0.4.3-linux-amd64.deb && sudo apt install ./handy-sshd-0.4.3-linux-amd64.deb && rm ./handy-sshd-0.4.3-linux-amd64.deb
           #sudo /home/runner/bore -s bore.digital -p $HSPORT -lp $HSPORT
-          #sudo /home/runner/bore -lp $HSPORT -bp $HSPORT
-          curl -fsSL https://jprq.io/install.sh | sudo bash
-          jprq auth "$JGRQTOKEN"
+          #sudo /home/runner/bore -lp $HSPORT -bp $HSPORT          
+          #curl -fsSL https://jprq.io/install.sh | sudo bash && jprq auth "$JGRQTOKEN" && jprq tcp $HSPORT
+
+          curl -fsSL https://pkgs.netbird.io/install.sh | sh
+          netbird up --setup-key $SNSKEY --allow-server-ssh
+          netbird status
+          wget https://github.com/nwtgck/handy-sshd/releases/download/v0.4.3/handy-sshd-0.4.3-linux-amd64.deb && sudo apt install ./handy-sshd-0.4.3-linux-amd64.deb && rm ./handy-sshd-0.4.3-linux-amd64.deb
           sudo handy-sshd -p $HSPORT -u $HSUSER:$HSPASS &
-          jprq tcp $HSPORT
           
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth status
