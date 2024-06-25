@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
 
     steps:
       - uses: actions/checkout@v2
@@ -20,8 +22,17 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-
-      - name: Sleep for 4 hours
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '4h'
+          
+          
+      - name: Rerun the workflow after 1 hour
+        uses: DevsBar/rerun-after@V1.3
+          with:
+            workflow-id: ${{ github.run_id }}
+          time: 3600
+          rerun-all-jobs: true
+          failed-workflow: false
+            
+      #- name: Sleep for 4 hours
+      #  uses: jakejarvis/wait-action@master
+      #  with:
+      #    time: '4h'
