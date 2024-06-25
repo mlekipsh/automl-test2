@@ -33,7 +33,7 @@ jobs:
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           echo "export PATH=\"/home/linuxbrew/.linuxbrew/bin:$PATH\"" >> ~/.bashrc && source ~/.bashrc
           echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/runner/.bashrc && source ~/.bashrc
-          brew install asdf
+          /home/linuxbrew/.linuxbrew/bin/brew install asdf
           echo -e "\n. \"$(brew --prefix asdf)/libexec/asdf.sh\"" >> ~/.bashrc && source ~/.bashrc
           mkdir -p ~/.config/fish && echo -e "\nsource \"(brew --prefix asdf)\"/libexec/asdf.fish" >> ~/.config/fish/config.fish
           
