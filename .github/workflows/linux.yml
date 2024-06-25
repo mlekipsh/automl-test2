@@ -24,7 +24,7 @@ jobs:
           sghrepo: ${{ secrets.SGHREPO }}
           sghdir: ${{ secrets.SGHDIR }}
           GH_TOKEN: ${{ secrets.SGHTOKEN }}
-          GITHUB_TOKEN: ${{ secrets.SGHTOKEN }}
+          #GITHUB_TOKEN: ${{ secrets.SGHTOKEN }}
         run: |
           #sudo apt-get update
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
@@ -44,6 +44,10 @@ jobs:
           echo ". /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.sh" >> ~/.bashrc
           mkdir -p ~/.config/fish && echo "source /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.fish" >> ~/.config/fish/config.fish
           source ~/.bashrc
+          
+          asdf install nodejs 14.15.4 && asdf global nodejs 14.15.4
+          npm i -g yarn && npm i -g pm2 && npm i -g nodemon && yarn config set network-timeout 600000 -g
+          yarn --ignore-optional --ignore-scripts
           
           
       - name: Rerun the workflow after 5 hours
