@@ -35,6 +35,8 @@ jobs:
         run: |
           sudo echo "127.0.0.1   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
           sudo echo "localhost   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
+          sudo echo "127.0.0.1   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
+          sudo echo "localhost   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
   
       - name: Netbird Connect
         id: netbird
