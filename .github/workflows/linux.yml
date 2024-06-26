@@ -7,12 +7,10 @@ on:
   #  branches: [ "main" ]
 
   workflow_dispatch:
-  
   repository_dispatch:
   
   #schedule:
     #- cron: "0 */5 * * *"
-  #  - cron: "*/5 * * * *"
   
 env:
   SGHREPO: ${{ secrets.SGHREPO }}
@@ -33,8 +31,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     #if: ${{ github.event_name == 'schedule' }}
-    #permissions:
-    #  id-token: write
 
     steps:
       - uses: actions/checkout@v4
@@ -85,14 +81,6 @@ jobs:
           npm i -g yarn && npm i -g pm2 && npm i -g nodemon && yarn config set network-timeout 600000 -g
           yarn --ignore-optional --ignore-scripts
           
-          
-      #- name: Rerun the workflow after 5 hours
-      #  uses: DevsBar/rerun-after@V1.3
-      #  with:
-      #    workflow-id: ${{ github.run_id }}
-      #    time: 17999
-      #    rerun-all-jobs: true
-      #    failed-workflow: false
     
       #- name: Start SSH via tmate
       #  uses: rdp-studio/ssh2actions@main
@@ -121,7 +109,6 @@ jobs:
       #     hostname: 'ghserver'
       #     args: '--allow-server-ssh'
     
-        
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
@@ -134,20 +121,33 @@ jobs:
       actions: write
     env:
       GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
+      WORKFLOWID: ${{ github.run_id }}
     steps:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
           time: '2m'
       
-      - name: Rerun workflow
+      - name: Redispatch workflow
         run: |
            curl -L \
-           -X POST \
-           -H "Accept: application/vnd.github+json" \
-           -H "Authorization: Bearer $GH_TOKEN" \
-           -H "X-GitHub-Api-Version: 2022-11-28" \
-           https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/rerun
-           
-      #- name: Reenable workflow
-      #  uses: liskin/gh-workflow-keepalive@v1
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOWID/dispatches \
+            -d '{"ref":"main"}'
+
+          #  curl -L \
+          #   -X POST \
+          #   -H "Accept: application/vnd.github+json" \
+          #   -H "Authorization: Bearer $GH_TOKEN" \
+          #   -H "X-GitHub-Api-Version: 2022-11-28" \
+          #   https://api.github.com/repos/$GITHUB_REPOSITORY/dispatches \
+          #   -d '{"event_type":"repository_dispatch"'
+
+          #  curl -L \
+          #  -X POST \
+          #  -H "Accept: application/vnd.github+json" \
+          #  -H "Authorization: Bearer $GH_TOKEN" \
+          #  -H "X-GitHub-Api-Version: 2022-11-28" \
+          #  https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/rerun
