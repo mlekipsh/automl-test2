@@ -62,7 +62,7 @@ jobs:
            ngrok config add-authtoken <token>
            ngrok tcp 80
            sudo apt install jq
-           curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url' > ngrokurl
+           curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url' | tee ./ngrokurl
         
       - name: Run a multi-line script
         run: |
