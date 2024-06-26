@@ -64,7 +64,8 @@ jobs:
               . ~/.bashrc
             di
           EOF
-          chsh -s fish
+          sudo chsh -s fish runner
+          sudo chsh -s fish root
           
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth status
