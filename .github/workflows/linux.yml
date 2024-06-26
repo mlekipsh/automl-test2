@@ -50,7 +50,9 @@ jobs:
 
            curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
            ngrok config add-authtoken $NGROK_TOKEN
-           ngrok tcp $HSPORT &
+           echo -e "${HSUSER}\n${HSPASS}" | sudo passwd "${USER}"
+           #ngrok tcp $HSPORT & 
+           ngrok tcp 22 & 
 
            sudo apt install jq
            MESSAGE=$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
