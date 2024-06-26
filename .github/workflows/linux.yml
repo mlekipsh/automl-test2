@@ -132,7 +132,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: linux.yml
-          repo: ${{ github.action_repository }}
+          repo: ${{ github.repository }}
           token: "${{ secrets.SGHTOKENLOCAL }}"
     
       # - name: Redispatch workflow
