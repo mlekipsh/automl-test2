@@ -27,7 +27,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'schedule' }}
+    #if: ${{ github.event_name == 'schedule' }}
     #permissions:
     #  id-token: write
 
@@ -114,7 +114,7 @@ jobs:
 
   workflow-keepalive:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'schedule' }}
+    #if: ${{ github.event_name == 'schedule' }}
     permissions:
       actions: write
     env:
