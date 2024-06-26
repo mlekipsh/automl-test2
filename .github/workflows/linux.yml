@@ -123,7 +123,7 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '5h'
+          time: '5m'
 
   workflow-keepalive:
     runs-on: ubuntu-latest
@@ -136,6 +136,6 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '5h'
+          time: '2m'
       - name: Reenable workflow
         uses: liskin/gh-workflow-keepalive@v1
