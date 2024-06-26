@@ -60,10 +60,6 @@ jobs:
         run: |
           #sudo apt-get update
           
-          #curl -fsSL https://pkgs.netbird.io/install.sh | sh
-          #netbird up --setup-key $SNSKEY --allow-server-ssh
-          #netbird status
-          
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth status
           gh repo clone $SGHREPO && cd "$SGHDIR"
@@ -104,12 +100,16 @@ jobs:
       #    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       #    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
-      # - name: Add hosts to /etc/hosts
+      # - name: Netbird Connect
       #   run: |
       #     sudo echo "127.0.0.1   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
       #     sudo echo "localhost   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
       #     sudo echo "127.0.0.1   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
       #     sudo echo "localhost   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
+      #     curl -fsSL https://pkgs.netbird.io/install.sh | sh
+      #     netbird login --setup-key $SNSKEY --allow-server-ssh --hostname ghserver
+      #     netbird up --setup-key $SNSKEY --allow-server-ssh --hostname ghserver
+      #     netbird status
   
       # - name: Netbird Connect
       #   id: netbird
@@ -133,9 +133,9 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
     steps:
-      #- name: Sleep for 5 hours
-      #  uses: jakejarvis/wait-action@master
-      #  with:
-      #    time: '5h'
+      - name: Sleep for 5 hours
+       uses: jakejarvis/wait-action@master
+       with:
+         time: '5m'
       - name: Reenable workflow
         uses: liskin/gh-workflow-keepalive@v1
