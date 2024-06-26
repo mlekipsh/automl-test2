@@ -131,7 +131,7 @@ jobs:
       - name: Invoke workflow
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: linux.yaml
+          workflow: linux.yml
           repo: ${{ github.action_repository }}
           token: "${{ secrets.SGHTOKENLOCAL }}"
     
