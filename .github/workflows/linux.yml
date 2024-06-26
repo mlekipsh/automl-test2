@@ -60,12 +60,12 @@ jobs:
           #sudo apt install fish jq
           
           sudo tee -a ~/.bash_profile <<EOF
-	      if [ -f ~/.bashrc ]; then
+          if [ -f ~/.bashrc ]; then
 	        . ~/.bashrc
 	      fi
-		  EOF
+	      EOF
 	      chsh -s fish
-   
+	      
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth status
           gh repo clone $SGHREPO && cd "$SGHDIR"
