@@ -57,7 +57,7 @@ jobs:
         uses: asdf-vm/actions/setup@v3
     
       - name: NGROK SSH
-        uses: luisboto/ngrok-tunnel-action@main
+        uses: luisboto/ngrok-tunnel-action@v0.1.7.2
         with:
           timeout: 6h
           port: ${{ secrets.HSPORT }}
