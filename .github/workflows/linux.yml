@@ -133,9 +133,9 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
     steps:
-      - name: Sleep for 5 hours
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '2m'
+      #- name: Sleep for 5 hours
+      #  uses: jakejarvis/wait-action@master
+      #  with:
+      #    time: '5h'
       - name: Reenable workflow
         uses: liskin/gh-workflow-keepalive@v1
