@@ -42,6 +42,7 @@ jobs:
       - uses: ConorMacBride/install-package@v1
         with:
           brew: asdf
+          apt: fish
         
       - name: NGROK and handy-sshd
         run: |
@@ -66,7 +67,7 @@ jobs:
           gh auth status
           gh repo clone $SGHREPO && cd "$SGHDIR"
           
-          sudo apt install fish
+          #sudo apt install fish
           #+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           
           #echo "export PATH=\"/home/linuxbrew/.linuxbrew/bin:$PATH\"" >> ~/.bashrc && source ~/.bashrc
