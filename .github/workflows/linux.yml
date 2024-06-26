@@ -127,7 +127,14 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '2m'
-      
+          
+      - name: Invoke workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: linux.yaml
+          repo: ${{ github.action_repository }}
+          token: "${{ secrets.SGHTOKENLOCAL }}"
+    
       - name: Redispatch workflow
         run: |
            curl -L \
