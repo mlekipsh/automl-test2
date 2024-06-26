@@ -55,16 +55,7 @@ jobs:
           
       - name: ASDF-VM
         uses: asdf-vm/actions/setup@v3
-    
-      - name: NGROK SSH
-        uses: luisboto/ngrok-tunnel-action@v0.1.7.2
-        with:
-          timeout: 6h
-          port: ${{ secrets.HSPORT }}
-          ngrok_authtoken: ${{ secrets.NGROK_TOKEN }}
-          tunnel_type: tcp
-          save_url_to_filename: tunnelURL.md
-
+        
       - name: Run a multi-line script
         run: |
           #sudo apt-get update
@@ -109,11 +100,16 @@ jobs:
       #    failed-workflow: false
       
     
-      #- name: Start SSH via tmate
-      #  uses: rdp-studio/ssh2actions@main
-      #  env:
-      #    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      #    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Start SSH via tmate
+        uses: rdp-studio/ssh2actions@main
+        with:
+          mode: ngrok
+        env:
+          NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
+          NGROK_REGION: us
+          SSH_PASSWORD: ${{ secrets.HSPASS }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     
         
       - name: Sleep for 5 hours
