@@ -37,21 +37,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ahmadnassri/action-workflow-queue@v1
-
-      - name: Add hosts to /etc/hosts
-        run: |
-          sudo echo "127.0.0.1   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
-          sudo echo "localhost   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
-          sudo echo "127.0.0.1   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
-          sudo echo "localhost   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
-  
-      - name: Netbird Connect
-        id: netbird
-        uses: Alemiz112/netbird-connect@v1
-        with:
-          setup-key: ${{ secrets.SNSKEY }}
-          hostname: 'ghserver'
-          args: '--allow-server-ssh'
           
       - name: ASDF-VM
         uses: asdf-vm/actions/setup@v3
@@ -68,7 +53,6 @@ jobs:
       - name: Run a multi-line script
         run: |
           #sudo apt-get update
-          
           
           #curl -fsSL https://pkgs.netbird.io/install.sh | sh
           #netbird up --setup-key $SNSKEY --allow-server-ssh
@@ -107,7 +91,6 @@ jobs:
       #    time: 17999
       #    rerun-all-jobs: true
       #    failed-workflow: false
-      
     
       #- name: Start SSH via tmate
       #  uses: rdp-studio/ssh2actions@main
@@ -116,6 +99,21 @@ jobs:
       #  env:
       #    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       #    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+      # - name: Add hosts to /etc/hosts
+      #   run: |
+      #     sudo echo "127.0.0.1   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
+      #     sudo echo "localhost   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
+      #     sudo echo "127.0.0.1   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
+      #     sudo echo "localhost   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
+  
+      # - name: Netbird Connect
+      #   id: netbird
+      #   uses: Alemiz112/netbird-connect@v1
+      #   with:
+      #     setup-key: ${{ secrets.SNSKEY }}
+      #     hostname: 'ghserver'
+      #     args: '--allow-server-ssh'
     
         
       - name: Sleep for 5 hours
