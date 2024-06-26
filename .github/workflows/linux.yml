@@ -110,6 +110,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       actions: write
+    env:
+      GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
     steps:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
