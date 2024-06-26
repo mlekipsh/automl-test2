@@ -56,6 +56,14 @@ jobs:
       - name: ASDF-VM
         uses: asdf-vm/actions/setup@v3
         
+      - name: NGROK
+        run: |
+           curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
+           ngrok config add-authtoken <token>
+           ngrok tcp 80
+           sudo apt install jq
+           curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url' > ngrokurl
+        
       - name: Run a multi-line script
         run: |
           #sudo apt-get update
@@ -100,16 +108,13 @@ jobs:
       #    failed-workflow: false
       
     
-      - name: Start SSH via tmate
-        uses: rdp-studio/ssh2actions@main
-        with:
-          mode: ngrok
-        env:
-          NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
-          NGROK_REGION: us
-          SSH_PASSWORD: ${{ secrets.HSPASS }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      #- name: Start SSH via tmate
+      #  uses: rdp-studio/ssh2actions@main
+      #  with:
+      #    mode: ngrok
+      #  env:
+      #    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      #    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     
         
       - name: Sleep for 5 hours
