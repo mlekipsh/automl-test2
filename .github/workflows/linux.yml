@@ -8,6 +8,9 @@ on:
 
   workflow_dispatch:
   
+  schedule:
+    - cron: '0 0 */5 * * *'
+  
   
 env:
   SGHREPO: ${{ secrets.SGHREPO }}
@@ -24,6 +27,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' }}
     #permissions:
     #  id-token: write
 
@@ -106,10 +110,11 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '5m'
+          time: '5h'
 
   workflow-keepalive:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' }}
     permissions:
       actions: write
     env:
@@ -118,6 +123,6 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '5m'
+          time: '5h'
       - name: Reenable workflow
         uses: liskin/gh-workflow-keepalive@v1
