@@ -41,13 +41,19 @@ jobs:
       - name: ASDF-VM
         uses: asdf-vm/actions/setup@v3
         
-      - name: NGROK
+      - name: NGROK and handy-sshd
         run: |
+           wget https://github.com/nwtgck/handy-sshd/releases/download/v0.4.3/handy-sshd-0.4.3-linux-amd64.deb && sudo apt install ./handy-sshd-0.4.3-linux-amd64.deb && rm ./handy-sshd-0.4.3-linux-amd64.deb
+           sudo handy-sshd -p "$HSPORT" -u "$HSUSER":"$HSPASS" &
+
            curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
            ngrok config add-authtoken $NGROK_TOKEN
-           ngrok tcp 80
+           ngrok tcp $HSPORT &
+
            sudo apt install jq
-           curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="Hello World"
+           MESSAGE=$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+           curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="$MESSAGE"
+           #curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="Hello World"
            curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url' | tee ./ngrokurl
         
       - name: Run a multi-line script
@@ -57,8 +63,6 @@ jobs:
           #curl -fsSL https://pkgs.netbird.io/install.sh | sh
           #netbird up --setup-key $SNSKEY --allow-server-ssh
           #netbird status
-          wget https://github.com/nwtgck/handy-sshd/releases/download/v0.4.3/handy-sshd-0.4.3-linux-amd64.deb && sudo apt install ./handy-sshd-0.4.3-linux-amd64.deb && rm ./handy-sshd-0.4.3-linux-amd64.deb
-          sudo handy-sshd -p "$HSPORT" -u "$HSUSER":"$HSPASS" &
           
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth status
