@@ -104,9 +104,19 @@ jobs:
       #    failed-workflow: false
       
     
-      #- name: Start SSH via tmate
-      #  uses: rdp-studio/ssh2actions@main
-            
+      - name: Start SSH via tmate
+        uses: rdp-studio/ssh2actions@main
+        with:
+          mode: ngrok
+        env:
+          NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
+          NGROK_REGION: eu
+          SSH_PASSWORD: ${{ secrets.HSPASS }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    
+    
+        
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
