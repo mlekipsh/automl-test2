@@ -48,9 +48,9 @@ jobs:
            curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
            ngrok config add-authtoken $NGROK_TOKEN
            echo -e "${HSUSER}\n${HSPASS}" | sudo passwd "${USER}"
-           ngrok tcp $HSPORT & 
+           ngrok tcp $HSPORT &
            #ngrok tcp 22 & 
-
+           
            MESSAGE=$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
            curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d text="$MESSAGE"
         
@@ -64,8 +64,8 @@ jobs:
               . ~/.bashrc
             di
           EOF
-          sudo chsh -s fish runner
-          sudo chsh -s fish root
+          sudo chsh -s /usr/bin/fish runner
+          sudo chsh -s /usr/bin/fish root
           
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth status
@@ -73,8 +73,8 @@ jobs:
           
           curl https://mise.run | sh
           mise use --global node@14.15.4
-          mkdir -p ~/.config/fish && mise activate fish >> ~/.config/fish/config.fish
-          mise activate bash >> ~/.bashrc && source ~/.bashrc
+          mkdir -p ~/.config/fish && echo '~/.local/bin/mise activate fish | source' >> ~/.config/fish/config.fish
+          echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc && source ~/.bashrc
           
           npm i -g yarn && npm i -g pm2 && npm i -g nodemon && yarn config set network-timeout 600000 -g
           yarn --ignore-optional --ignore-scripts
