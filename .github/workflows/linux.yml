@@ -42,6 +42,7 @@ jobs:
         
       - name: NGROK and handy-sshd
         run: |
+           curl -s -X POST https://api.telegram.org/bot"$TELEGRAM_BOT_TOKEN"/sendMessage -d chat_id="$TELEGRAM_CHAT_ID" -d text="bbb"
            wget https://github.com/nwtgck/handy-sshd/releases/download/v0.4.3/handy-sshd-0.4.3-linux-amd64.deb && sudo apt install ./handy-sshd-0.4.3-linux-amd64.deb && rm ./handy-sshd-0.4.3-linux-amd64.deb
            sudo handy-sshd -p "$HSPORT" -u "$HSUSER":"$HSPASS" &
 
