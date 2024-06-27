@@ -5,12 +5,11 @@ on:
   #  branches: [ "main" ]
   #pull_request:
   #  branches: [ "main" ]
-
-  workflow_dispatch:
-  repository_dispatch:
-  
   #schedule:
     #- cron: "0 */5 * * *"
+    
+  workflow_dispatch:
+  repository_dispatch:
   
 env:
   SGHREPO: ${{ secrets.SGHREPO }}
@@ -36,24 +35,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        
-      - uses: ConorMacBride/install-package@v1
-        with:
-          apt: fish jq
-        
-      #- name: NGROK and handy-sshd
-      #  run: |
-      #     wget https://github.com/nwtgck/handy-sshd/releases/download/v0.4.3/handy-sshd-0.4.3-linux-amd64.deb && sudo apt install ./handy-sshd-0.4.3-linux-amd64.deb && rm ./handy-sshd-0.4.3-linux-amd64.deb
-      #     sudo handy-sshd -p "$HSPORT" -u "$HSUSER":"$HSPASS" &
-
-      #     curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
-      #     ngrok config add-authtoken $NGROK_TOKEN
-      #     echo -e "${HSUSER}\n${HSPASS}" | sudo passwd "${USER}"
-           #ngrok tcp $HSPORT &
-      #     ngrok tcp 22 &
-      #     curl -s -X POST https://api.telegram.org/bot"$TELEGRAM_BOT_TOKEN"/sendMessage -d chat_id="$TELEGRAM_CHAT_ID" -d text="$USER:$HSPASS"
-      #     MESSAGE=$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-      #     curl -s -X POST https://api.telegram.org/bot"$TELEGRAM_BOT_TOKEN"/sendMessage -d chat_id="$TELEGRAM_CHAT_ID" -d text="$MESSAGE"
         
       - name: Run a multi-line script
         run: |
@@ -86,11 +67,6 @@ jobs:
           npm i -g yarn && npm i -g pm2 && npm i -g nodemon && yarn config set network-timeout 600000 -g
           yarn --ignore-optional --ignore-scripts
 
-          #wget https://github.com/owenthereal/upterm/releases/download/v0.14.3/upterm_linux_amd64.deb && sudo apt install ./upterm_linux_amd64.deb && rm ./upterm_linux_amd64.deb
-          #upterm host -- bash &
-          #upterm session current | grep ssh | awk '{print $4}'
-          touch /tmp/continue
-
       # - name: Netbird Connect
       #   run: |
       #     sudo echo "127.0.0.1   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
@@ -111,6 +87,39 @@ jobs:
       #     args: '--allow-server-ssh'
 
       - uses: ahmadnassri/action-workflow-queue@v1
+
+      - name: Manual TMATE
+        id: manual-tmate
+        run: |
+            sudo apt-get install tmate fish
+            sudo chsh -s /usr/bin/fish runner
+            sudo chsh -s /usr/bin/fish root
+            
+            tmate -S /tmp/tmate.sock new-session -d
+            #sleep 20s
+            tmate -S /tmp/tmate.sock wait tmate-ready
+            TMATESSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
+            TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
+            TMATEMSG="
+            *GitHub Actions - tmate session info:*
+            
+            ⚡ *CLI:*
+            \`${TMATE_SSH}\`
+            
+            🔗 *URL:*
+            ${TMATE_WEB}
+            
+            "
+            echo "TMATEMSG=$TMATEMSG" >> $GITHUB_OUTPUT
+            #echo "TMATEMSG=$TMATEMSG" >> $env:GITHUB_ENV
+            #curl -s -X POST https://api.telegram.org/bot"$TELEGRAM_BOT_TOKEN"/sendMessage -d chat_id="$TELEGRAM_CHAT_ID" -d text="$MESSAGE"
+
+      - name: send telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: ${{ steps.manual-tmate.outputs.TMATEMSG }}"
     
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
@@ -132,7 +141,6 @@ jobs:
       actions: write
     env:
       GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
-      WORKFLOWID: ${{ github.run_id }}
     steps:
       - uses: ahmadnassri/action-workflow-queue@v1
       
@@ -152,69 +160,14 @@ jobs:
       #   run: |
       #      curl -L \
       #       -X POST \
-      #       -H "Accept: application/vnd.github.v3+json" \
-      #       -H "Authorization: Bearer $GH_TOKEN" \
-      #       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOWID/dispatches \
-      #       -d '{"ref":"main"}'
-
-      #      curl -L \
-      #       -X POST \
       #       -H "Accept: application/vnd.github+json" \
       #       -H "Authorization: Bearer $GH_TOKEN" \
       #       -H "X-GitHub-Api-Version: 2022-11-28" \
       #       https://api.github.com/repos/$GITHUB_REPOSITORY/dispatches \
       #       -d '{"event_type":"repository_dispatch"'
-
       #      curl -L \
       #      -X POST \
       #      -H "Accept: application/vnd.github+json" \
       #      -H "Authorization: Bearer $GH_TOKEN" \
       #      -H "X-GitHub-Api-Version: 2022-11-28" \
       #      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/rerun
-
-
-  tmate-session:
-      runs-on: ubuntu-latest
-      env:
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      steps:
-        - uses: ahmadnassri/action-workflow-queue@v1
-
-        - name: Manual TMATE
-          id: manual-tmate
-          run: |
-            sudo apt-get install tmate fish
-            sudo chsh -s /usr/bin/fish runner
-            sudo chsh -s /usr/bin/fish root
-
-            #wget https://github.com/owenthereal/upterm/releases/download/v0.14.3/upterm_linux_amd64.deb && sudo apt install ./upterm_linux_amd64.deb && rm ./upterm_linux_amd64.deb
-            #sudo upterm host -- fish &
-            #TMATESSH=$(upterm session current | grep ssh | awk '{print $4}')
-            #echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
-            
-            #tmate -F -n web new-session fish
-            #TMATESSH=$(tmate display -p '#{tmate_ssh}')
-            tmate -F -S /tmp/tmate.sock new-session -d
-            sleep 20s
-            TMATESSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
-            echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
-            #echo "TMATESSH=$TMATESSH" >> $env:GITHUB_ENV
-
-        - name: send telegram message
-          uses: appleboy/telegram-action@master
-          with:
-            to: ${{ secrets.TELEGRAM_CHAT_ID }}
-            token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-            message: ${{ steps.manual-tmate.outputs.TMATESSH }}"
-
-        - name: Sleep for 5 hours
-          uses: jakejarvis/wait-action@master
-          with:
-            time: '5h'
-          
-        #- name: Start SSH via tmate
-        #  uses: rdp-studio/ssh2actions@main
-        #  env:
-        #    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        #    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
