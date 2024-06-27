@@ -192,9 +192,10 @@ jobs:
             #sudo upterm host -- fish &
             #TMATESSH=$(upterm session current | grep ssh | awk '{print $4}')
             #echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
-          
-            tmate -F -n web new-session fish
-            TMATESSH=$(tmate display -p '#{tmate_ssh}')
+            
+            #tmate -F -n web new-session fish
+            #TMATESSH=$(tmate display -p '#{tmate_ssh}')
+            TMATESSH=$(tmate -S /tmp/tmate-sock display -p '#{tmate_ssh}')
             echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
             #echo "TMATESSH=$TMATESSH" >> $env:GITHUB_ENV
 
