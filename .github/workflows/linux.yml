@@ -188,14 +188,14 @@ jobs:
             sudo chsh -s /usr/bin/fish runner
             sudo chsh -s /usr/bin/fish root
 
-            wget https://github.com/owenthereal/upterm/releases/download/v0.14.3/upterm_linux_amd64.deb && sudo apt install ./upterm_linux_amd64.deb && rm ./upterm_linux_amd64.deb
-            sudo upterm host -- fish &
-            TMATESSH=$(upterm session current | grep ssh | awk '{print $4}')
-            echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
-          
-            #tmate -F -n web new-session fish
-            #TMATESSH=$(tmate display -p '#{tmate_ssh}')
+            #wget https://github.com/owenthereal/upterm/releases/download/v0.14.3/upterm_linux_amd64.deb && sudo apt install ./upterm_linux_amd64.deb && rm ./upterm_linux_amd64.deb
+            #sudo upterm host -- fish &
+            #TMATESSH=$(upterm session current | grep ssh | awk '{print $4}')
             #echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
+          
+            tmate -F -n web new-session fish
+            TMATESSH=$(tmate display -p '#{tmate_ssh}')
+            echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
             #echo "TMATESSH=$TMATESSH" >> $env:GITHUB_ENV
 
         - name: send telegram message
