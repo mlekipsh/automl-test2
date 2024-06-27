@@ -186,8 +186,3 @@ jobs:
           env:
             TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
             TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-
-        - uses: Wandalen/wretry.action@v3.5.0
-          with:
-            attempt_limit: 0
-            action: rdp-studio/ssh2actions@main
