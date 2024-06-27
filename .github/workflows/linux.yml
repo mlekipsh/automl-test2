@@ -100,17 +100,21 @@ jobs:
             tmate -S /tmp/tmate.sock wait tmate-ready
             TMATE_SSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
             TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
-            echo 'TMATEMSG<<EOF'
-            *GitHub Actions - tmate session info:*
+          
+            TMATEMSG=" \n
+            *GitHub Actions - tmate session info:*  \n
+            \n
+            ⚡ *CLI:*  \n
+            \`${TMATE_SSH}\`  \n
+              \n
+            🔗 \*URL:\*  \n
+            ${TMATE_WEB}  \n
+            "
+            echo "TMATEMSG<<EOF" >> $GITHUB_ENV
+            echo $TMATEMSG >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
             
-            ⚡ *CLI:*
-            \`${TMATE_SSH}\`
-            
-            🔗 *URL:*
-            ${TMATE_WEB}
-            
-            echo EOF
-            echo "TMATEMSG=$TMATEMSG" >> $GITHUB_OUTPUT
+            #echo "TMATEMSG=$TMATEMSG" >> $GITHUB_OUTPUT
             #echo "TMATEMSG=$TMATEMSG" >> $env:GITHUB_ENV
             #curl -s -X POST https://api.telegram.org/bot"$TELEGRAM_BOT_TOKEN"/sendMessage -d chat_id="$TELEGRAM_CHAT_ID" -d text="$MESSAGE"
 
@@ -119,7 +123,8 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          message: ${{ steps.manual-tmate.outputs.TMATEMSG }}"
+          message: ${{ env.TMATEMSG }}"
+          #message: ${{ steps.manual-tmate.outputs.TMATEMSG }}"
     
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
