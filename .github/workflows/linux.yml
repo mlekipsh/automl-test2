@@ -77,25 +77,17 @@ jobs:
           npm i -g yarn && npm i -g pm2 && npm i -g nodemon && yarn config set network-timeout 600000 -g
           yarn --ignore-optional --ignore-scripts && yarn
 
-      - name: Netbird Connect
+      - name: Netbird Connect and handy-sshd
         run: |
           #sudo echo "127.0.0.1   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
           #sudo echo "localhost   ghserver.netbird.cloud" | sudo tee -a /etc/hosts
           #sudo echo "127.0.0.1   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
           #sudo echo "localhost   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
+          wget https://github.com/nwtgck/handy-sshd/releases/download/v0.4.3/handy-sshd-0.4.3-linux-amd64.deb && sudo apt install ./handy-sshd-0.4.3-linux-amd64.deb && rm ./handy-sshd-0.4.3-linux-amd64.deb
+          sudo handy-sshd -p "$HSPORT" -u "$HSUSER":"$HSPASS" &
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
           netbird login --setup-key $SNSKEY --hostname ghserver
           netbird up --allow-server-ssh
-      #     netbird up --setup-key $SNSKEY --allow-server-ssh --hostname ghserver
-      #     netbird status
-  
-      #- name: Netbird Connect
-      #  id: netbird
-      #  uses: Alemiz112/netbird-connect@v1
-      #  with:
-      #    setup-key: ${{ secrets.SNSKEY }}
-      #    hostname: 'ghserver'
-      #    args: '--allow-server-ssh'
 
       - uses: ahmadnassri/action-workflow-queue@v1
 
