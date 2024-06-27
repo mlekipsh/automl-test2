@@ -207,7 +207,12 @@ jobs:
             to: ${{ secrets.TELEGRAM_CHAT_ID }}
             token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
             message: ${{ steps.manual-tmate.outputs.TMATESSH }}"
-    
+
+        - name: Sleep for 5 hours
+          uses: jakejarvis/wait-action@master
+          with:
+            time: '5h'
+          
         #- name: Start SSH via tmate
         #  uses: rdp-studio/ssh2actions@main
         #  env:
