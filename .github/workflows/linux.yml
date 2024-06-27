@@ -195,7 +195,7 @@ jobs:
             
             #tmate -F -n web new-session fish
             #TMATESSH=$(tmate display -p '#{tmate_ssh}')
-            tmate -S /tmp/tmate.sock new-session -d
+            tmate -F -S /tmp/tmate.sock new-session -d
             sleep 20s
             TMATESSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
             echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
