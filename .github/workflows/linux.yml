@@ -86,13 +86,13 @@ jobs:
           yarn --ignore-optional --ignore-scripts
           
     
-      #- name: Start SSH via tmate
-      #  uses: rdp-studio/ssh2actions@main
-      #  with:
-      #    mode: ngrok
-      #  env:
-      #    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      #    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Start SSH via tmate
+        uses: rdp-studio/ssh2actions@main
+        with:
+          mode: ngrok
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
       # - name: Netbird Connect
       #   run: |
