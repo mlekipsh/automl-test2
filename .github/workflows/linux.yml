@@ -109,11 +109,12 @@ jobs:
             🔗 *URL:*  
             ${TMATE_WEB}  
             "
-            curl -sSX POST "${TELEGRAM_API_URL:-https://api.telegram.org}/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            curl -sX POST "${TELEGRAM_API_URL:-https://api.telegram.org}/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
               -d "disable_web_page_preview=true" \
               -d "parse_mode=Markdown" \
               -d "chat_id=${TELEGRAM_CHAT_ID}" \
-              -d "text=${TMATEMSG}" >${TELEGRAM_LOG}
+              -d "text=${TMATEMSG}"
+              
               
             echo "TMATEMSG<<EOF" >> $GITHUB_ENV
             echo $TMATEMSG >> $GITHUB_ENV
