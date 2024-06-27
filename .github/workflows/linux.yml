@@ -185,7 +185,8 @@ jobs:
           id: manual-tmate
           run: |
             sudo apt-get install tmate fish
-            tmate -F -n web new-session fish &
+            sudo chsh /usr/bin/fish
+            tmate -F -n web new-session
             TMATESSH=$(tmate display -p '#{tmate_ssh}')
             echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
 
