@@ -31,10 +31,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     #if: ${{ github.event_name == 'schedule' }}
+    permissions:
+      actions: write
 
     steps:
       - uses: actions/checkout@v4
-      - uses: ahmadnassri/action-workflow-queue@v1
         
       - uses: ConorMacBride/install-package@v1
         with:
@@ -108,6 +109,8 @@ jobs:
       #     setup-key: ${{ secrets.SNSKEY }}
       #     hostname: 'ghserver'
       #     args: '--allow-server-ssh'
+
+      - uses: ahmadnassri/action-workflow-queue@v1
     
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
@@ -131,6 +134,8 @@ jobs:
       GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
       WORKFLOWID: ${{ github.run_id }}
     steps:
+      - uses: ahmadnassri/action-workflow-queue@v1
+      
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
@@ -171,6 +176,8 @@ jobs:
   tmate-session:
       runs-on: ubuntu-latest
       steps:
+        - uses: ahmadnassri/action-workflow-queue@v1
+        
         - name: Start SSH via tmate
           uses: rdp-studio/ssh2actions@main
           env:
