@@ -49,6 +49,9 @@ jobs:
           sudo chsh -s /usr/bin/fish runner
           sudo chsh -s /usr/bin/fish root
           
+          wget https://github.com/jesseduffield/lazygit/releases/download/v0.42.0/lazygit_0.42.0_Linux_x86_64.tar.gz tar -zxvf lazygit_0.42.0_Linux_x86_64.tar.gz lazygit && mv lazygit ~/.local/bin/.
+          git config --global user.name name
+          git config --global user.email email
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth status
           gh repo clone $SGHREPO && cd "$SGHDIR"
@@ -101,14 +104,14 @@ jobs:
             TMATE_SSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
             TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
           
-            TMATEMSG=" \n
-            *GitHub Actions - tmate session info:*  \n
-            \n
-            ⚡ *CLI:*  \n
-            \`${TMATE_SSH}\`  \n
+            TMATEMSG=" 
+            *GitHub Actions - tmate session info:*  
+            
+            ⚡ *CLI:*  
+            \`${TMATE_SSH}\`  
               \n
-            🔗 \*URL:\*  \n
-            ${TMATE_WEB}  \n
+            🔗 \*URL:\*  
+            ${TMATE_WEB}  
             "
             echo "TMATEMSG<<EOF" >> $GITHUB_ENV
             echo $TMATEMSG >> $GITHUB_ENV
