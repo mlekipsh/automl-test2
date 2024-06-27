@@ -104,11 +104,17 @@ jobs:
             *GitHub Actions - tmate session info:*  
             
             ⚡ *CLI:*  
-            `${TMATE_SSH}`  
+            \`${TMATE_SSH}\`  
               
             🔗 *URL:*  
             ${TMATE_WEB}  
             "
+            curl -sSX POST "${TELEGRAM_API_URL:-https://api.telegram.org}/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              -d "disable_web_page_preview=true" \
+              -d "parse_mode=Markdown" \
+              -d "chat_id=${TELEGRAM_CHAT_ID}" \
+              -d "text=${TMATEMSG}" >${TELEGRAM_LOG}
+              
             echo "TMATEMSG<<EOF" >> $GITHUB_ENV
             echo $TMATEMSG >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
