@@ -84,8 +84,8 @@ jobs:
           #sudo echo "127.0.0.1   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
           #sudo echo "localhost   ghserver-1.netbird.cloud" | sudo tee -a /etc/hosts
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
-          netbird login --setup-key $SNSKEY --allow-server-ssh --hostname ghserver
-          netbird up
+          netbird login --setup-key $SNSKEY --hostname ghserver
+          netbird up --allow-server-ssh
       #     netbird up --setup-key $SNSKEY --allow-server-ssh --hostname ghserver
       #     netbird status
   
