@@ -180,9 +180,23 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       steps:
         - uses: ahmadnassri/action-workflow-queue@v1
-        
-        - name: Start SSH via tmate
-          uses: rdp-studio/ssh2actions@main
-          env:
-            TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-            TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+        - name: Manual TMATE
+          id: manual-tmate
+          run: |
+            tmate -F -n web new-session
+            TMATESSH=$(tmate display -p '#{tmate_ssh}')
+            echo "TMATESSH=$TMATESSH" >> $GITHUB_OUTPUT
+
+        - name: send telegram message
+          uses: appleboy/telegram-action@master
+          with:
+            to: ${{ secrets.TELEGRAM_CHAT_ID }}
+            token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+            message: ${{ steps.manual-tmate.outputs.TMATESSH }}"
+    
+        #- name: Start SSH via tmate
+        #  uses: rdp-studio/ssh2actions@main
+        #  env:
+        #    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        #    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
