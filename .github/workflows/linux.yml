@@ -169,6 +169,8 @@ jobs:
     #if: ${{ github.event_name == 'schedule' }}
     permissions:
       actions: write
+    strategy:
+      fail-fast: false
     env:
       GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
     steps:
