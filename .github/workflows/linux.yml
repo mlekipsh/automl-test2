@@ -91,7 +91,6 @@ jobs:
       - name: Manual TMATE with Telegram
         id: manual-tmate
         run: |
-            echo '::add-mask::test'
             sudo apt-get install tmate fish
             sudo chsh -s /usr/bin/fish runner
             sudo chsh -s /usr/bin/fish root
@@ -101,6 +100,8 @@ jobs:
             tmate -S /tmp/tmate.sock wait tmate-ready > /dev/null || true
             TMATE_SSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
             TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
+            echo "::add-mask::$TMATE_SSH"
+            echo "::add-mask::$TMATE_WEB"
           
             TMATEMSG=" 
             *GitHub Actions - tmate session info:*  
