@@ -97,7 +97,7 @@ jobs:
             
             tmate -S /tmp/tmate.sock new-session -d
             #sleep 20s
-            tmate -S /tmp/tmate.sock wait tmate-ready
+            tmate -S /tmp/tmate.sock wait tmate-ready 1> /dev/null
             TMATE_SSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
             TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
           
