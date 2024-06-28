@@ -123,19 +123,18 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '5m'
+          time: '1m'
 
       - name: Sleep for 5 mins for new Workflow to init
         uses: jakejarvis/wait-action@master
         with:
-          time: '5m'
+          time: '1m'
           
       - name: Commit changes
         run: |
           cd $SGHDIR/data
           git ls-files --others --exclude-standard | grep trades | xargs git add
-          git commit -m "trade changes"
-          git push
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push
           
       - name: Cancel workflow
         uses: action-pack/cancel@v1
