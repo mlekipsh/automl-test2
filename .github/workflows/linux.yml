@@ -98,38 +98,38 @@ jobs:
 
       - uses: ahmadnassri/action-workflow-queue@v1
 
-      - name: Manual TMATE with Telegram and zellij
-        id: manual-tmate
-        run: |
-            sudo apt-get install tmate
-            curl -L zellij.dev/launch > zlj && chmod +x ./zlj && mv ./zlj ~/.local/bin/.
+      # - name: Manual TMATE with Telegram and zellij
+      #   id: manual-tmate
+      #   run: |
+      #       sudo apt-get install tmate
+      #       curl -L zellij.dev/launch > zlj && chmod +x ./zlj && mv ./zlj ~/.local/bin/.
 
-            tmpvar=$(tmate -S /tmp/tmate.sock new-session -d)
-            #sleep 20s
-            tmpvar=$(tmate -S /tmp/tmate.sock wait tmate-ready)
-            TMATE_SSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
-            TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
-            echo "::add-mask::$TMATE_SSH"
-            echo "::add-mask::$TMATE_WEB"
+      #       tmpvar=$(tmate -S /tmp/tmate.sock new-session -d)
+      #       #sleep 20s
+      #       tmpvar=$(tmate -S /tmp/tmate.sock wait tmate-ready)
+      #       TMATE_SSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
+      #       TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
+      #       echo "::add-mask::$TMATE_SSH"
+      #       echo "::add-mask::$TMATE_WEB"
           
-            TMATEMSG=" 
-            *GitHub Actions - tmate session info:*  
+      #       TMATEMSG=" 
+      #       *GitHub Actions - tmate session info:*  
             
-            ⚡ *CLI:*  
-            \`${TMATE_SSH}\`  
+      #       ⚡ *CLI:*  
+      #       \`${TMATE_SSH}\`  
               
-            🔗 *URL:*  
-            ${TMATE_WEB}  
-            "
-            tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=true" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${TMATEMSG}")
+      #       🔗 *URL:*  
+      #       ${TMATE_WEB}  
+      #       "
+      #       tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=true" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${TMATEMSG}")
             
-            #echo "TMATEMSG<<EOF" >> $GITHUB_ENV
-            #echo $TMATEMSG >> $GITHUB_ENV
-            #echo "EOF" >> $GITHUB_ENV
+      #       #echo "TMATEMSG<<EOF" >> $GITHUB_ENV
+      #       #echo $TMATEMSG >> $GITHUB_ENV
+      #       #echo "EOF" >> $GITHUB_ENV
             
-            #echo "TMATEMSG=$TMATEMSG" >> $GITHUB_OUTPUT
-            #echo "TMATEMSG=$TMATEMSG" >> $env:GITHUB_ENV
-            #curl -s -X POST https://api.telegram.org/bot"$TELEGRAM_BOT_TOKEN"/sendMessage -d chat_id="$TELEGRAM_CHAT_ID" -d text="$MESSAGE"
+      #       #echo "TMATEMSG=$TMATEMSG" >> $GITHUB_OUTPUT
+      #       #echo "TMATEMSG=$TMATEMSG" >> $env:GITHUB_ENV
+      #       #curl -s -X POST https://api.telegram.org/bot"$TELEGRAM_BOT_TOKEN"/sendMessage -d chat_id="$TELEGRAM_CHAT_ID" -d text="$MESSAGE"
     
       - name: Install OpenVPN
         run: |
@@ -153,6 +153,15 @@ jobs:
           time: '5h'
         timeout-minutes: 360
 
+      - name: Invoke workflow
+        env:
+          GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: linux.yml
+          repo: ${{ github.repository }}
+          token: "${{ secrets.SGHTOKENLOCAL }}"
+
       - name: Sleep for 5 mins for new Workflow to init
         uses: jakejarvis/wait-action@master
         with:
@@ -170,29 +179,29 @@ jobs:
       - name: Cancel workflow
         uses: action-pack/cancel@v1
 
-  workflow-keepalive:
-    runs-on: ubuntu-latest
-    #if: ${{ github.event_name == 'schedule' }}
-    permissions:
-      actions: write
-    strategy:
-      fail-fast: false
-    env:
-      GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
-    steps:
-      - uses: ahmadnassri/action-workflow-queue@v1
+  # workflow-keepalive:
+  #   runs-on: ubuntu-latest
+  #   #if: ${{ github.event_name == 'schedule' }}
+  #   permissions:
+  #     actions: write
+  #   strategy:
+  #     fail-fast: false
+  #   env:
+  #     GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
+  #   steps:
+  #     - uses: ahmadnassri/action-workflow-queue@v1
       
-      - name: Sleep for 5 hours
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '5h'
+  #     - name: Sleep for 5 hours
+  #       uses: jakejarvis/wait-action@master
+  #       with:
+  #         time: '5h'
           
-      - name: Invoke workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: linux.yml
-          repo: ${{ github.repository }}
-          token: "${{ secrets.SGHTOKENLOCAL }}"
+  #     - name: Invoke workflow
+  #       uses: benc-uk/workflow-dispatch@v1
+  #       with:
+  #         workflow: linux.yml
+  #         repo: ${{ github.repository }}
+  #         token: "${{ secrets.SGHTOKENLOCAL }}"
     
       # - name: Redispatch workflow
       #   run: |
