@@ -127,6 +127,7 @@ jobs:
           sudo apt install -y openvpn openvpn-systemd-resolved
           #for binance netherlands,spain works
           #sudo openvpn --config riseup-ovpn.conf --daemon
+          #sudo openvpn --config ovpn.conf -auth-user-pass <(echo -e "user\npass")
           curl ipinfo.io
 
       - name: Sleep for 5 hours
