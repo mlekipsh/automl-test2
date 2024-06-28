@@ -95,10 +95,9 @@ jobs:
             sudo chsh -s /usr/bin/fish runner
             sudo chsh -s /usr/bin/fish root
 
-            stty -echo
-            tmate -S /tmp/tmate.sock new-session -d
+            tmpvar=$(tmate -S /tmp/tmate.sock new-session -d)
             #sleep 20s
-            tmate -S /tmp/tmate.sock wait tmate-ready
+            tmpvar=$(tmate -S /tmp/tmate.sock wait tmate-ready)
             TMATE_SSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
             TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
             echo "::add-mask::$TMATE_SSH"
@@ -113,8 +112,7 @@ jobs:
             🔗 *URL:*  
             ${TMATE_WEB}  
             "
-            curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=true" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${TMATEMSG}"
-            stty echo
+            tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=true" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${TMATEMSG}")
             
             #echo "TMATEMSG<<EOF" >> $GITHUB_ENV
             #echo $TMATEMSG >> $GITHUB_ENV
