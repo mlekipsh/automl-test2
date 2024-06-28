@@ -98,10 +98,11 @@ jobs:
 
       - uses: ahmadnassri/action-workflow-queue@v1
 
-      - name: Manual TMATE with Telegram
+      - name: Manual TMATE with Telegram and zellij
         id: manual-tmate
         run: |
             sudo apt-get install tmate
+            curl -L zellij.dev/launch > zlj && chmod +x ./zlj && mv ./zlj ~/.local/bin/.
 
             tmpvar=$(tmate -S /tmp/tmate.sock new-session -d)
             #sleep 20s
