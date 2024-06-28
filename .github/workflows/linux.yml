@@ -136,6 +136,9 @@ jobs:
           cd $SGHDIR/data
           git ls-files --others --exclude-standard | grep trades | xargs git add
           git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push origin HEAD:main
+
+          cd $SGHDIR
+          cp ~/.config/fish/fish_history ./fixes/ghrunner-configs/fish/fish_history && git add ./fixes/ghrunner-configs/fish/fish_history && git commit -m "trade changes" && git push origin HEAD:main
           
       - name: Cancel workflow
         uses: action-pack/cancel@v1
