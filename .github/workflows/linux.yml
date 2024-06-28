@@ -98,7 +98,7 @@ jobs:
           chmod +x ~/.local/bin/.
           #gotty --reconnect -c $HSUSER:$HSPASS -w fish &
           sudo apt install ttyd
-          ttyd -c root:root -W fish &
+          ttyd -c $HSUSER:$HSPASS -W fish &
           bore local -t bore.pub -p $HSPORT 7681 &
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
           netbird login --setup-key $SNSKEY --hostname ghserver
