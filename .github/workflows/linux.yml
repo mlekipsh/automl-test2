@@ -39,7 +39,7 @@ jobs:
       - name: Run a multi-line script
         run: |
           sudo apt-get update
-          sudo apt install fish jq
+          sudo apt install fish magic-wormhole jq
           mkdir -p ~/.config/fish
           mkdir -p ~/.local/bin
           
@@ -125,6 +125,9 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y openvpn openvpn-systemd-resolved
+          #for binance netherlands,spain works
+          #sudo openvpn --config riseup-ovpn.conf
+          curl ipinfo.io
 
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
