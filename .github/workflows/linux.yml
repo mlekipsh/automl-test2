@@ -95,6 +95,7 @@ jobs:
           wget https://github.com/ekzhang/bore/releases/download/v0.5.1/bore-v0.5.1-x86_64-unknown-linux-musl.tar.gz && tar xf ./bore-v0.5.1-x86_64-unknown-linux-musl.tar.gz && mv ./bore ~/.local/bin/.
           wget https://github.com/yudai/gotty/releases/download/v2.0.0-alpha.3/gotty_2.0.0-alpha.3_linux_amd64.tar.gz && tar xvf gotty_2.0.0-alpha.3_linux_amd64.tar.gz && mv ./gotty ~/.local/bin/.
           chmod +x ~/.local/bin/.
+          #gotty -c $HSUSER:$HSPASS -w fish
           bore local -t bore.pub -p $HSPORT $HSPORT
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
           netbird login --setup-key $SNSKEY --hostname ghserver
