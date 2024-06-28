@@ -43,7 +43,7 @@ jobs:
       - name: Connect to VPN
         uses: "kota65535/github-openvpn-connect-action@v2"
         with:
-          config_file: ./openvpn/vpnbook-fr200/vpnbook-fr200-tcp80.ovpn
+          config_file: ./openvpn/vpnbook-openvpn-fr200/vpnbook-fr200-tcp80.ovpn
           username: "vpnbook"
           password: "dnx97sa"
         
