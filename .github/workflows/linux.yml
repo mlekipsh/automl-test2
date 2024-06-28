@@ -95,9 +95,9 @@ jobs:
             sudo chsh -s /usr/bin/fish runner
             sudo chsh -s /usr/bin/fish root
             
-            tmate -S /tmp/tmate.sock new-session -d
+            tmate -S /tmp/tmate.sock new-session -d 1> /dev/null
             #sleep 20s
-            tmate -S /tmp/tmate.sock wait tmate-ready 1> /dev/null
+            tmate -S /tmp/tmate.sock wait tmate-ready
             TMATE_SSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
             TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
           
