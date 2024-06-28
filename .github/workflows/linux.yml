@@ -71,7 +71,7 @@ jobs:
           #dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
           
           curl https://mise.run | sh
-          echo '~/.local/bin/mise activate fish | source' >> ~/.config/fish/config.fish
+          #echo '~/.local/bin/mise activate fish | source' >> ~/.config/fish/config.fish
           echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc && source ~/.bashrc
           mise use --global node@14.15.4
           
@@ -91,9 +91,7 @@ jobs:
       - name: Manual TMATE with Telegram
         id: manual-tmate
         run: |
-            sudo apt-get install tmate fish
-            sudo chsh -s /usr/bin/fish runner
-            sudo chsh -s /usr/bin/fish root
+            sudo apt-get install tmate
 
             tmpvar=$(tmate -S /tmp/tmate.sock new-session -d)
             #sleep 20s
