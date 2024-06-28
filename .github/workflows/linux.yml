@@ -124,12 +124,12 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '1m'
+          time: '5h'
 
       - name: Sleep for 5 mins for new Workflow to init
         uses: jakejarvis/wait-action@master
         with:
-          time: '1m'
+          time: '5m'
           
       - name: Commit changes
         run: |
