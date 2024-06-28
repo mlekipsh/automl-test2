@@ -35,6 +35,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install OpenVPN
+        run: |
+          sudo apt update
+          sudo apt install -y openvpn openvpn-systemd-resolved
+      - name: Connect to VPN
+        uses: "kota65535/github-openvpn-connect-action@v2"
+        with:
+          config_file: ./openvpn/vpnbook-fr200/vpnbook-fr200-tcp80.ovpn
+          username: "vpnbook"
+          password: "dnx97sa"
         
       - name: Run a multi-line script
         run: |
