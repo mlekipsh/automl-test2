@@ -59,7 +59,7 @@ jobs:
           git config --global user.name name
           git config --global user.email email
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
-          gh auth status
+          gh auth setup-git
           gh repo clone $SGHREPO && cd "$SGHDIR"
           cp -r ./fixes/ghrunner-configs/. ~/.config/.
           cp -r ./fixes/termux-configs/lazyvim ~/.config/.
@@ -97,7 +97,7 @@ jobs:
             
             tmate -S /tmp/tmate.sock new-session -d 1> /dev/null
             #sleep 20s
-            tmate -S /tmp/tmate.sock wait tmate-ready
+            tmate -S /tmp/tmate.sock wait tmate-ready 1> /dev/null
             TMATE_SSH=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
             TMATE_WEB=$(tmate -S /tmp/tmate.sock display -p '#{tmate_web}')
           
@@ -134,7 +134,7 @@ jobs:
         run: |
           cd $SGHDIR/data
           git ls-files --others --exclude-standard | grep trades | xargs git add
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes"; git push }
           
       - name: Cancel workflow
         uses: action-pack/cancel@v1
