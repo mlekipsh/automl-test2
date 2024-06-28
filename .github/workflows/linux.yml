@@ -94,7 +94,7 @@ jobs:
           sudo handy-sshd -p "$HSPORT" -u "$HSUSER":"$HSPASS" &
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
           netbird login --setup-key $SNSKEY --hostname ghserver
-          netbird up --allow-server-ssh
+          netbird up --setup-key $SNSKEY --hostname ghserver --allow-server-ssh
 
       - uses: ahmadnassri/action-workflow-queue@v1
 
