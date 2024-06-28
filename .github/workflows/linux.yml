@@ -35,18 +35,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install OpenVPN
-        run: |
-          sudo apt update
-          sudo apt install -y openvpn openvpn-systemd-resolved
-      - name: Connect to VPN
-        uses: "kota65535/github-openvpn-connect-action@v2"
-        with:
-          config_file: ./openvpn/vpnbook-openvpn-fr200/vpnbook-fr200-tcp80.ovpn
-          username: "vpnbook"
-          password: "dnx97sa"
-          client_key: ${{ secrets.OVPN_CLIENT_KEY }}
         
       - name: Run a multi-line script
         run: |
@@ -133,6 +121,11 @@ jobs:
             #echo "TMATEMSG=$TMATEMSG" >> $env:GITHUB_ENV
             #curl -s -X POST https://api.telegram.org/bot"$TELEGRAM_BOT_TOKEN"/sendMessage -d chat_id="$TELEGRAM_CHAT_ID" -d text="$MESSAGE"
     
+      - name: Install OpenVPN
+        run: |
+          sudo apt update
+          sudo apt install -y openvpn openvpn-systemd-resolved
+
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
