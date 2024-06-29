@@ -25,6 +25,7 @@ env:
   SSH_PASSWORD: ${{ secrets.HSPASS }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  ENV64: ${{ secrets.ENV64 }}
           
 jobs:
   build:
@@ -48,6 +49,17 @@ jobs:
         with:
           secrets: ${{ toJSON(secrets) }}
           file: .prod.env
+          
+       - name: Load ENV file
+         run: |
+            echo $ENV64 | openssl base64 -d --out .env
+            #gh secret set -f .env
+            
+       - name: Read environment file and set variables
+         uses: cosq-network/dotenv-loader@v1.0.2
+         with:
+           env-file: .env
+          
         
       - name: Run a multi-line script
         run: |
