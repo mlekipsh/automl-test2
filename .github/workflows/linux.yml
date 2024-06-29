@@ -19,7 +19,7 @@ env:
   SNUSERTOKEN: ${{ secrets.SNUSERTOKEN }}
   SNSKEY: ${{ secrets.SNSKEY }}
   HSUSER: ${{ secrets.HSUSER }}
-  HSPASS: ${{ secrets.HSPASS }}
+  #HSPASS: ${{ secrets.HSPASS }}
   HSPORT: ${{ secrets.HSPORT }}
   NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
   SSH_PASSWORD: ${{ secrets.HSPASS }}
