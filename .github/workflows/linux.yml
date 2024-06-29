@@ -190,6 +190,14 @@ jobs:
       #     server: "FR231.vpnbook.com"
       #     username: "vpnbook"
       #     password: "dnx97sa"
+      
+      - name: Establish VPN Connection
+        uses: unknow-sk/github-action-vpn@v1
+        with:
+          VPN_SERVER: "FR231.vpnbook.com"
+          VPN_USER: "vpnbook"
+          VPN_PASSWORD: "dnx97sa"
+          
 
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
