@@ -184,12 +184,12 @@ jobs:
           #sudo openvpn --config ovpn.conf -auth-user-pass <(echo -e "user\npass")
           curl ipinfo.io
 
-      # - name: Connect to PPTP VPN
-      #   uses: mizumotok/pptp-action@v1
-      #   with:
-      #     server: "FR231.vpnbook.com"
-      #     username: "vpnbook"
-      #     password: "dnx97sa"
+      - name: Connect to PPTP VPN
+        uses: mizumotok/pptp-action@master
+        with:
+          server: "FR231.vpnbook.com"
+          username: "vpnbook"
+          password: "dnx97sa"
       
       - name: Establish VPN Connection
         uses: unknow-sk/github-action-vpn@main
