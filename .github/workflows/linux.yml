@@ -108,7 +108,7 @@ jobs:
           #bore local -t bore.pub -p $HSPORT $WEBPORT &
           
           sudo sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
-          sudo echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+          #sudo echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
           sudo systemctl reload sshd
           WEBPORT=22
           bore local -t bore.pub -p $HSPORT $WEBPORT &
