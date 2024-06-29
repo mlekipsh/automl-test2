@@ -105,14 +105,16 @@ jobs:
           #WEBPORT=8080
           #sudo apt install ttyd && sudo -u runner ttyd -c "$HSUSER:$HSPASS" -W fish &
           #WEBPORT=7681
-          bore local -t bore.pub -p $HSPORT $WEBPORT &
+          #bore local -t bore.pub -p $HSPORT $WEBPORT &
           
           sudo sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
           sudo echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
           sudo systemctl reload sshd
-          pip install webssh
-          wssh &
-          WEBPORT=8888
+          WEBPORT=22
+          bore local -t bore.pub -p $HSPORT $WEBPORT &
+          #pip install webssh
+          #wssh &
+          #WEBPORT=8888
           
 
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
