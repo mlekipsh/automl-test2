@@ -43,6 +43,11 @@ jobs:
         uses: pierotofy/set-swap-space@master
         with:
           swap-size-gb: 10
+          
+      - uses: thaind0/envfile@v1
+        with:
+          secrets: ${{ toJSON(secrets) }}
+          file: .prod.env
         
       - name: Run a multi-line script
         run: |
