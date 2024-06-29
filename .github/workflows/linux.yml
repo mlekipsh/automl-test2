@@ -59,11 +59,11 @@ jobs:
         uses: cosq-network/dotenv-loader@v1.0.2
         with:
           env-file: .env
-          HSPORT: ${{ secrets.HSPORT2 }}
           
         
       - name: Run a multi-line script
         run: |
+          echo "HSPORT:$HSPORT2" >> $GITHUB_ENV
           sudo apt-get update
           sudo apt install fish magic-wormhole jq
           mkdir -p ~/.config/fish
