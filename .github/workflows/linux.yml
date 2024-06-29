@@ -97,8 +97,8 @@ jobs:
           wget https://github.com/yudai/gotty/releases/download/v2.0.0-alpha.3/gotty_2.0.0-alpha.3_linux_amd64.tar.gz && tar xvf gotty_2.0.0-alpha.3_linux_amd64.tar.gz && mv ./gotty ~/.local/bin/.
           wget https://github.com/yubo/gotty/releases/download/pre-release/gotty_linux_amd64.tar.gz && tar xf ./gotty_linux_amd64.tar.gz && mv ./gotty ~/.local/bin/gotty2
           chmod +x ~/.local/bin/.
-          #gotty --reconnect -c $HSUSER:$HSPASS -w fish &
-          sudo gotty2 deamon
+          gotty --reconnect -c $HSUSER:$HSPASS -w fish &
+          #sudo gotty2 deamon
           WEBPORT=8080
           #sudo apt install ttyd && sudo -u runner ttyd -c "$HSUSER:$HSPASS" -W fish &
           #WEBPORT=7681
