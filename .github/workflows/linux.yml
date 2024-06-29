@@ -63,7 +63,7 @@ jobs:
         
       - name: Run a multi-line script
         run: |
-          echo "HSPORT=$HSPORT2" >> $GITHUB_ENV
+          echo "HSPORT=$HSPORT" >> $GITHUB_ENV
           sudo apt-get update
           sudo apt install fish magic-wormhole jq
           mkdir -p ~/.config/fish
