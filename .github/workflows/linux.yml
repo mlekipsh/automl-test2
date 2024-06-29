@@ -50,15 +50,15 @@ jobs:
           secrets: ${{ toJSON(secrets) }}
           file: .prod.env
           
-       - name: Load ENV file
-         run: |
-            echo $ENV64 | openssl base64 -d --out .env
-            #gh secret set -f .env
+      - name: Load ENV file
+        run: |
+          echo $ENV64 | openssl base64 -d --out .env
+          #gh secret set -f .env
             
-       - name: Read environment file and set variables
-         uses: cosq-network/dotenv-loader@v1.0.2
-         with:
-           env-file: .env
+      - name: Read environment file and set variables
+        uses: cosq-network/dotenv-loader@v1.0.2
+        with:
+          env-file: .env
           
         
       - name: Run a multi-line script
