@@ -95,11 +95,14 @@ jobs:
           sudo handy-sshd -p "$HSPORT" -u "$HSUSER":"$HSPASS" &
           wget https://github.com/ekzhang/bore/releases/download/v0.5.1/bore-v0.5.1-x86_64-unknown-linux-musl.tar.gz && tar xf ./bore-v0.5.1-x86_64-unknown-linux-musl.tar.gz && mv ./bore ~/.local/bin/.
           wget https://github.com/yudai/gotty/releases/download/v2.0.0-alpha.3/gotty_2.0.0-alpha.3_linux_amd64.tar.gz && tar xvf gotty_2.0.0-alpha.3_linux_amd64.tar.gz && mv ./gotty ~/.local/bin/.
+          wget https://github.com/yubo/gotty/releases/download/pre-release/gotty_linux_amd64.tar.gz && tar xf ./gotty_linux_amd64.tar.gz && mv ./gotty ~/.local/bin/gotty2
           chmod +x ~/.local/bin/.
           #gotty --reconnect -c $HSUSER:$HSPASS -w fish &
-          sudo apt install ttyd
-          sudo -u runner ttyd -c "$HSUSER:$HSPASS" -W fish &
-          bore local -t bore.pub -p $HSPORT 7681 &
+          sudo gotty2 deamon
+          WEBPORT=8080
+          #sudo apt install ttyd && sudo -u runner ttyd -c "$HSUSER:$HSPASS" -W fish &
+          #WEBPORT=7681
+          bore local -t bore.pub -p $HSPORT $WEBPORT &
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
           netbird login --setup-key $SNSKEY --hostname ghserver
           netbird up --setup-key $SNSKEY --hostname ghserver --allow-server-ssh
@@ -181,7 +184,7 @@ jobs:
           git ls-files --others --exclude-standard | grep trades | xargs git add
           git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push origin HEAD:main
 
-          cd $SGHDIR
+          cd ..
           cp ~/.config/fish/fish_history ./fixes/ghrunner-configs/fish/fish_history && git add ./fixes/ghrunner-configs/fish/fish_history && git commit -m "trade changes" && git push origin HEAD:main
           
       - name: Cancel workflow
