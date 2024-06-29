@@ -187,9 +187,9 @@ jobs:
       - name: Connect to PPTP VPN
         uses: mizumotok/pptp-action@master
         with:
-          server: "cz1.freevpn724.com"
-          username: "freevpn724"
-          password: "k37iajp4y71"
+          server: "server1.freevpn.me"
+          username: "freevpn.me"
+          password: "k2YbR6Ve2JBe"
       
       #- name: Establish VPN Connection
       #  uses: unknow-sk/github-action-vpn@main
