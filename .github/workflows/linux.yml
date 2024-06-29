@@ -78,8 +78,8 @@ jobs:
           #chromium-browser
           #chromium
           #sudo apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb; sudo apt-get -fy install
+          #wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 
+          #sudo dpkg -i google-chrome-stable_current_amd64.deb; sudo apt-get -fy install
           
           curl https://mise.run | sh
           #echo '~/.local/bin/mise activate fish | source' >> ~/.config/fish/config.fish
@@ -87,7 +87,8 @@ jobs:
           mise use --global node@14.15.4
           
           npm i -g yarn && npm i -g pm2 && npm i -g nodemon && yarn config set network-timeout 600000 -g
-          yarn --ignore-optional --ignore-scripts && yarn
+          yarn --ignore-optional --ignore-scripts 
+          yarn
 
       - name: Netbird Connect and handy-sshd and bore, gotty
         run: |
@@ -105,6 +106,15 @@ jobs:
           #sudo apt install ttyd && sudo -u runner ttyd -c "$HSUSER:$HSPASS" -W fish &
           #WEBPORT=7681
           bore local -t bore.pub -p $HSPORT $WEBPORT &
+          
+          sudo sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+          sudo echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+          sudo systemctl reload sshd
+          pip install webssh
+          wssh &
+          WEBPORT=8888
+          
+
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
           netbird login --setup-key $SNSKEY --hostname ghserver
           netbird up --setup-key $SNSKEY --hostname ghserver --allow-server-ssh
