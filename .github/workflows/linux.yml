@@ -19,7 +19,7 @@ env:
   SNUSERTOKEN: ${{ secrets.SNUSERTOKEN }}
   SNSKEY: ${{ secrets.SNSKEY }}
   HSUSER: ${{ secrets.HSUSER }}
-  #HSPASS: ${{ secrets.HSPASS }}
+  HSPASS: ${{ secrets.HSPASS }}
   HSPORT: ${{ secrets.HSPORT }}
   NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
   SSH_PASSWORD: ${{ secrets.HSPASS }}
@@ -59,6 +59,7 @@ jobs:
         uses: cosq-network/dotenv-loader@v1.0.2
         with:
           env-file: .env
+          HSPORT: ${{ secrets.HSPORT2 }}
           
         
       - name: Run a multi-line script
