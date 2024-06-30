@@ -66,7 +66,7 @@ jobs:
           #echo -e "${HSUSER}\n${HSPASS}" | sudo passwd "${USER}"
            curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
           ngrok config add-authtoken $NGROK_TOKEN
-          while true; do date; $(nohup pkill ngrok &); sleep 1s; $(nohup ngrok tcp 22 &); NGROKURL="$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"; MSG="\`${NGROKURL}\`"; tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${MSG}"); sleep 5s ; done
+          while true; do date; $(pkill ngrok &); sleep 1s; $(nohup ngrok tcp 22 &); NGROKURL="$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"; MSG="\`${NGROKURL}\`"; tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${MSG}"); sleep 5s ; done
           
           
       - name: Run a multi-line script
