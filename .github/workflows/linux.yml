@@ -130,7 +130,7 @@ jobs:
           sudo echo 'PermitRootLogin yes' | sudo tee -a /etc/ssh/sshd_config
           sudo systemctl reload sshd
           WEBPORT=22
-          bore local -t bore.pub -p $HSPORT $WEBPORT &
+          #bore local -t bore.pub -p $HSPORT $WEBPORT &
           #pip install webssh
           #wssh &
           #WEBPORT=8888
