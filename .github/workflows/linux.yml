@@ -145,9 +145,12 @@ jobs:
       - name: NGROK with Telegram
         run: |
           #echo -e "${HSUSER}\n${HSPASS}" | sudo passwd "${USER}"
-          #ngrok tcp 22 &
-          #NGROKURL=$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-          while true; do date;TMATEMSG="\`aaaa\`"; tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${TMATEMSG}"); sleep 5s ; done &
+          ngrok tcp 22 &
+          NGROKURL=$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+          while true; do date;TMATEMSG="\
+          url:\
+          \`${NGROKURL}\`\
+          "; tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${TMATEMSG}"); sleep 5s ; done &
           
       # - name: Manual TMATE with Telegram and zellij
       #   id: manual-tmate
