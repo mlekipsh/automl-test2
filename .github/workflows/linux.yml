@@ -69,7 +69,9 @@ jobs:
           #pkill ngrok
           ngrok tcp 22 &
           NGROKURL="$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
+          NGROKURL="bbb"
           while true; do date; MSG="\
+          url:\
           \`${NGROKURL}\` \
           "; tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${MSG}"); sleep 5s ; done
           
