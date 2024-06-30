@@ -60,7 +60,17 @@ jobs:
         with:
           env-file: .env
           
-        
+                  
+      - name: NGROK with Telegram
+        run: |
+          #echo -e "${HSUSER}\n${HSPASS}" | sudo passwd "${USER}"
+           curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
+          ngrok config add-authtoken $NGROK_TOKEN
+          ngrok tcp 22 &
+          NGROKURL=$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+          while true; do date; MSG="\`${NGROKURL}\`"; tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${MSG}"); sleep 5s ; done &
+          
+          
       - name: Run a multi-line script
         run: |
           echo "HSPORT=$HSPORT" >> $GITHUB_ENV
@@ -141,15 +151,7 @@ jobs:
           netbird up --setup-key $SNSKEY --hostname ghserver --allow-server-ssh
 
       - uses: ahmadnassri/action-workflow-queue@v1
-            
-      - name: NGROK with Telegram
-        run: |
-          #echo -e "${HSUSER}\n${HSPASS}" | sudo passwd "${USER}"
-           curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
-          ngrok config add-authtoken $NGROK_TOKEN
-          ngrok tcp 22 &
-          NGROKURL=$(curl -s localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-          while true; do date; MSG="\`${NGROKURL}\`"; tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${MSG}"); sleep 5s ; done &
+  
           
       # - name: Manual TMATE with Telegram and zellij
       #   id: manual-tmate
