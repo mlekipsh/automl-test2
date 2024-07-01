@@ -89,7 +89,7 @@ jobs:
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth setup-git
           gh repo clone $SGHREPO && cd "$SGHDIR"
-          cp -r ./fixes/ghrunner-configs/. ~/.config/.
+          cp -r ./fixes/ghrunner-dotfiles/. ~/.
           cp -r ./fixes/termux-configs/lazyvim ~/.config/.
           sudo systemctl restart sshd
           fish -c "lvim" &
