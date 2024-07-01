@@ -137,11 +137,12 @@ jobs:
           done
           echo "boreport=$boreport" >> $GITHUB_ENV
           
-          curl -sSf https://sshx.io/get | sh
-          nohup sshx -q --shell fish > ./sshx.out 2> /dev/null & sleep 3
-          #SSHXURL=$(<sshx.out)
-          #SSHXURL=`cat sshx.out`
-          SSHXURL="$(cat ./sshx.out)"
+          #curl -sSf https://sshx.io/get | sh
+          #nohup sshx -q --shell fish > ./sshx.out 2> /dev/null & sleep 3
+          ##SSHXURL=$(<sshx.out)
+          ##SSHXURL=`cat sshx.out`
+          #SSHXURL="$(cat ./sshx.out)"
+          SSHXURL=""
           MSG=$'\n'"wf: ${{ github.workflow }}"$'\n'"boressh:  \`boldssh ${HSUSER}@bore.pub -p ${boreport}\`"$'\n'"sshx:  \`${SSHXURL}\`";
           tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${MSG}");
           
