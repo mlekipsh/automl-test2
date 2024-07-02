@@ -1,4 +1,4 @@
-name: CI2
+name: CI-dev
 
 on:
   #push:
@@ -244,7 +244,7 @@ jobs:
           GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: linux2.yml
+          workflow: linux-dev.yml
           repo: ${{ github.repository }}
           token: "${{ secrets.SGHTOKENLOCAL }}"
 
@@ -287,7 +287,7 @@ jobs:
   #     - name: Invoke workflow
   #       uses: benc-uk/workflow-dispatch@v1
   #       with:
-  #         workflow: linux2.yml
+  #         workflow: linux-dev.yml
   #         repo: ${{ github.repository }}
   #         token: "${{ secrets.SGHTOKENLOCAL }}"
     
