@@ -253,7 +253,7 @@ jobs:
       - name: Commit changes
         #working-directory: automl-test
         run: |
-          tempvar=$(ls ./)
+          tempvar=$(ls ./$SGHDIR/)
           echo $tempvar
           git pull && cd ./data && git checkout main && git pull
           git ls-files --others --exclude-standard | grep trades | xargs git add
