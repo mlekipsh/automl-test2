@@ -257,10 +257,9 @@ jobs:
           git ls-files --others --exclude-standard | grep trades | xargs git add
           git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push origin HEAD:main
 
-          tempvar=$(pwd)
-          echo $tempvar
           cd ..
-          cp ~/.local/share/fish/fish_history ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git add ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git commit -m "trade changes" && git push origin HEAD:main
+          cp ~/.local/share/fish/fish_history ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git add ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push origin HEAD:main
           
       - name: Cancel workflow
         uses: action-pack/cancel@v1
