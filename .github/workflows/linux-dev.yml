@@ -233,7 +233,7 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '1m'
+          time: '1s'
         timeout-minutes: 360
 
       - name: Invoke workflow
@@ -248,7 +248,7 @@ jobs:
       - name: Sleep for 5 mins for new Workflow to init
         uses: jakejarvis/wait-action@master
         with:
-          time: '1m'
+          time: '1s'
           
       - name: Commit changes
         working-directory: ./automl-test
