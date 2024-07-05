@@ -239,7 +239,7 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '5s'
+          time: '5h'
         timeout-minutes: 360
 
       - name: Invoke workflow
@@ -254,7 +254,7 @@ jobs:
       - name: Sleep for 5 mins for new Workflow to init
         uses: jakejarvis/wait-action@master
         with:
-          time: '5s'
+          time: '5m'
           
       - name: Commit changes
         #working-directory: automl-test
