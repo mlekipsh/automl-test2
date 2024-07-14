@@ -108,10 +108,6 @@ jobs:
           
           npm i -g yarn && npm i -g pm2 && npm i -g nodemon && yarn config set network-timeout 600000 -g && yarn --ignore-optional --ignore-scripts && node ./node_modules/puppeteer/install.js
           
-      - name: start-app    
-        run: |
-          cd ./$SGHDIR
-          pm2 start ./pm2-f2024-07-14.json
 
       - name: Netbird Connect and handy-sshd and bore, gotty
         run: |
@@ -170,7 +166,13 @@ jobs:
           mkdir ss && cd ss && wget https://github.com/shadowsocks/shadowsocks-rust/releases/download/v1.20.1/shadowsocks-v1.20.1.x86_64-unknown-linux-gnu.tar.xz && tar xvf ./shadowsocks-v1.20.1.x86_64-unknown-linux-gnu.tar.xz && rm ./shadowsocks-v1.20.1.x86_64-unknown-linux-gnu.tar.xz && mv ./* ~/.local/bin/. && cd .. && rm -rf ss
           nohup sslocal -c ./$SGHDIR/fixes/ghrunner-dotfiles/.etc/.ssprofile &
           sudo apt install proxychains4 && echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf && sudo sed -e '/socks4/ s/^#*/# /' -i /etc/proxychains4.conf
-
+          sleep 3
+          
+      - name: start-app    
+        run: |
+          cd ./$SGHDIR
+          proxychains4 pm2 start ./pm2-f2024-07-14.json
+          
       - uses: ahmadnassri/action-workflow-queue@v1
       
       #- name: NGROK with Telegram
