@@ -107,6 +107,7 @@ jobs:
           mise use --global node@14.15.4
           
           npm i -g yarn && npm i -g pm2 && npm i -g nodemon && yarn config set network-timeout 600000 -g && yarn --ignore-optional --ignore-scripts && node ./node_modules/puppeteer/install.js
+          
 
       - name: Netbird Connect and handy-sshd and bore, gotty
         run: |
@@ -162,8 +163,7 @@ jobs:
           curl -fsSL https://pkgs.netbird.io/install.sh | sh
           netbird login --setup-key $SNSKEY --hostname ghserver
           netbird up --setup-key $SNSKEY --hostname ghserver --allow-server-ssh
-
-          # sudo apt install shadowsocks-libev
+          
           mkdir ss && cd ss && wget https://github.com/shadowsocks/shadowsocks-rust/releases/download/v1.20.1/shadowsocks-v1.20.1.x86_64-unknown-linux-gnu.tar.xz && tar xvf ./shadowsocks-v1.20.1.x86_64-unknown-linux-gnu.tar.xz && rm ./shadowsocks-v1.20.1.x86_64-unknown-linux-gnu.tar.xz && mv ./* ~/.local/bin/. && cd .. && rm -rf ss
           nohup sslocal -c ./$SGHDIR/fixes/ghrunner-dotfiles/.etc/.ssprofile &
           sudo apt install proxychains4 && echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf && sudo sed -e '/socks4/ s/^#*/# /' -i /etc/proxychains4.conf
