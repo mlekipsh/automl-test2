@@ -245,7 +245,7 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '5h'
-        timeout-minutes: 360
+        timeout-minutes: 30
 
       - name: Invoke workflow
         env:
