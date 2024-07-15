@@ -166,7 +166,7 @@ jobs:
           
           mkdir ss && cd ss && wget https://github.com/shadowsocks/shadowsocks-rust/releases/download/v1.20.1/shadowsocks-v1.20.1.x86_64-unknown-linux-gnu.tar.xz && tar xvf ./shadowsocks-v1.20.1.x86_64-unknown-linux-gnu.tar.xz && rm ./shadowsocks-v1.20.1.x86_64-unknown-linux-gnu.tar.xz && mv ./* ~/.local/bin/. && cd .. && rm -rf ss
           nohup sslocal -c ./$SGHDIR/fixes/ghrunner-dotfiles/.etc/.ssprofile &
-          sudo apt install proxychains4 && echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf && sudo sed -e '/socks4/ s/^#*/# /' -i /etc/proxychains4.conf
+          sudo apt install proxychains4 && echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf && sudo sed -e '/socks4/ s/^#*/# /' -i /etc/proxychains4.conf && sleep 3
 
       - uses: ahmadnassri/action-workflow-queue@v1
       
@@ -261,14 +261,14 @@ jobs:
         run: |
           cd ./$SGHDIR && git pull && cd ./data && git checkout main && git pull
           git ls-files --others --exclude-standard | grep trades | xargs git add
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push origin HEAD:main
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
           git ls-files -m | grep trades | xargs git add
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "modified trade changes" && git push origin HEAD:main
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "modified trade changes" && git push origin HEAD:main; }
 
-          cd ..
-          git add ./data 
+          cd ..;
+          git add ./data
           # cp ~/.local/share/fish/fish_history ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git add ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push origin HEAD:main
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
           
       - name: Cancel workflow
         uses: action-pack/cancel@v1
