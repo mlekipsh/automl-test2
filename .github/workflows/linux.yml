@@ -257,14 +257,14 @@ jobs:
         run: |
           cd ./$SGHDIR && git pull && cd ./data && git checkout main && git pull
           git ls-files --others --exclude-standard | grep trades | xargs git add
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push origin HEAD:main
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
           git ls-files -m | grep trades | xargs git add
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "modified trade changes" && git push origin HEAD:main
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "modified trade changes" && git push origin HEAD:main; }
 
-          cd ..
+          cd ..;
           git add ./data
           # cp ~/.local/share/fish/fish_history ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git add ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || git commit -m "trade changes" && git push origin HEAD:main
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
           
       - name: Cancel workflow
         uses: action-pack/cancel@v1
