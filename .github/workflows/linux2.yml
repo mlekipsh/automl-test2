@@ -169,12 +169,14 @@ jobs:
           sudo apt install proxychains4 && echo "socks5 127.0.0.1 1080" | sudo tee -a /etc/proxychains4.conf && sudo sed -e '/socks4/ s/^#*/# /' -i /etc/proxychains4.conf
           sleep 3
           
-      - name: start-app    
-        run: |
-          cd ./$SGHDIR
-          proxychains4 pm2 start ./pm2-f2024-07-14.json
           
       - uses: ahmadnassri/action-workflow-queue@v1
+      
+      
+      - name: start-app    
+        run: |
+          cd ./$SGHDIR && git pull && cd ./data && git checkout main && git pull && cd ..;
+          proxychains4 pm2 start ./pm2-f2024-07-14.json
       
       #- name: NGROK with Telegram
       #  run: |
