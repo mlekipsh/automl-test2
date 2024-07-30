@@ -250,6 +250,17 @@ jobs:
         timeout-minutes: 360
 
       - name: Invoke workflow
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: linux2.yml
+          repo: ${{ github.repository }}
+          token: "${{ secrets.SGHTOKENLOCAL }}"
+
+      - name: Invoke workflow-fail
+        if: failure()
         env:
           GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
         uses: benc-uk/workflow-dispatch@v1
@@ -259,11 +270,13 @@ jobs:
           token: "${{ secrets.SGHTOKENLOCAL }}"
 
       - name: Sleep for 5 mins for new Workflow to init
+        if: success() || failure()
         uses: jakejarvis/wait-action@master
         with:
           time: '5m'
           
       - name: Commit changes
+        if: success() || failure()
         #working-directory: automl-test
         run: |
           cd ./$SGHDIR && git pull && cd ./data && git checkout main && git pull
@@ -278,6 +291,7 @@ jobs:
           git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
           
       - name: Cancel workflow
+        if: success() || failure()
         uses: action-pack/cancel@v1
 
   # workflow-keepalive:
