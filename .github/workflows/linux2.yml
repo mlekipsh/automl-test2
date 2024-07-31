@@ -276,6 +276,7 @@ jobs:
           time: '5m'
           
       - name: Commit changes
+        id: commit
         if: success() || failure()
         #working-directory: automl-test
         run: |
@@ -291,6 +292,18 @@ jobs:
           git add ./data
           # cp ~/.local/share/fish/fish_history ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git add ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history
           git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
+          
+      - name: inform telegram for commit
+        if: steps.commit.conclusion == 'failure'
+        run: |
+          MSG=$'\n'"wf: ${{ github.workflow }}"$'\n'"boressh:  \`commit\`"$$'\n'"sshx:  \`${SSHXURL}\`"
+          tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${MSG}");         
+          
+      - name: wait 30m for commit
+        if: steps.commit.conclusion == 'failure'
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '30m'
           
       - name: Cancel workflow
         if: success() || failure()
