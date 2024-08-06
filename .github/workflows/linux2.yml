@@ -9,7 +9,7 @@ on:
     #- cron: "0 */5 * * *"
     
   workflow_dispatch:
-  repository_dispatch:
+  # repository_dispatch:
   
 env:
   SGHREPO: ${{ secrets.SGHREPO }}
