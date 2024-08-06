@@ -1,4 +1,4 @@
-name: CI
+name: CI-matrix
 
 on:
   #push:
@@ -9,7 +9,7 @@ on:
     #- cron: "0 */5 * * *"
     
   workflow_dispatch:
-  # repository_dispatch:
+  repository_dispatch:
   
 env:
   SGHREPO: ${{ secrets.SGHREPO }}
@@ -238,25 +238,25 @@ jobs:
           time: '5h'
         timeout-minutes: 360
 
-      - name: Invoke workflow
-        if: success()
-        env:
-          GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: linux.yml
-          repo: ${{ github.repository }}
-          token: "${{ secrets.SGHTOKENLOCAL }}"
+      # - name: Invoke workflow
+      #   if: success()
+      #   env:
+      #     GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
+      #   uses: benc-uk/workflow-dispatch@v1
+      #   with:
+      #     workflow: linux-matrix.yml
+      #     repo: ${{ github.repository }}
+      #     token: "${{ secrets.SGHTOKENLOCAL }}"
 
-      - name: Invoke workflow-fail
-        if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: linux.yml
-          repo: ${{ github.repository }}
-          token: "${{ secrets.SGHTOKENLOCAL }}"
+      # - name: Invoke workflow-fail
+      #   if: failure()
+      #   env:
+      #     GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
+      #   uses: benc-uk/workflow-dispatch@v1
+      #   with:
+      #     workflow: linux-matrix.yml
+      #     repo: ${{ github.repository }}
+      #     token: "${{ secrets.SGHTOKENLOCAL }}"
 
       - name: Sleep for 5 mins for new Workflow to init
         if: success() || failure()
@@ -319,7 +319,7 @@ jobs:
   #     - name: Invoke workflow
   #       uses: benc-uk/workflow-dispatch@v1
   #       with:
-  #         workflow: linux.yml
+  #         workflow: linux-matrix.yml
   #         repo: ${{ github.repository }}
   #         token: "${{ secrets.SGHTOKENLOCAL }}"
     
