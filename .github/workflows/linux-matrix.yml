@@ -248,20 +248,24 @@ jobs:
         id: commit
         if: success() || failure()
         #working-directory: automl-test
-        run: |
-          #cd ./$SGHDIR/data && git stash && cd ../..;
-          cd ./$SGHDIR && git pull
-          cd ./data && git checkout main && git pull --rebase --autostash
-          #git stash pop
-          git ls-files --others --exclude-standard | grep trades | xargs git add
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
-          git ls-files -m | grep trades | xargs git add
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "modified trade changes" && git push origin HEAD:main; }
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 5
+          max_attempts: 1
+          command: |
+            #cd ./$SGHDIR/data && git stash && cd ../..;
+            cd ./$SGHDIR && git pull
+            cd ./data && git checkout main && git pull --rebase --autostash
+            #git stash pop
+            git ls-files --others --exclude-standard | grep trades | xargs git add
+            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
+            git ls-files -m | grep trades | xargs git add
+            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "modified trade changes" && git push origin HEAD:main; }
 
-          cd ..;
-          git add ./data
-          # cp ~/.local/share/fish/fish_history ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git add ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history
-          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
+            cd ..;
+            git add ./data
+            # cp ~/.local/share/fish/fish_history ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git add ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history
+            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
           
       - name: inform telegram for commit
         if: steps.commit.conclusion == 'failure' || steps.commit.outcome == 'failure'
@@ -297,9 +301,9 @@ jobs:
         with:
           time: '30m'
         
-      - name: Cancel workflow
-        if: success() || failure()
-        uses: action-pack/cancel@v1
+      # - name: Cancel workflow
+      #   if: success() || failure()
+      #   uses: action-pack/cancel@v1
 
   # workflow-keepalive:
   #   runs-on: ubuntu-latest
