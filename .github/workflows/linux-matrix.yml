@@ -197,10 +197,20 @@ jobs:
       - name: start-app    
         env: 
           app: ${{ matrix.app }}
-        run: |
-          cd ./$SGHDIR && git pull
-          cd ./data && git checkout main && git pull --rebase --autostash && cd ..;
-          pm2 start ./"$app".js
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 2
+          max_attempts: 3
+          command: |
+            cd ./$SGHDIR && git pull
+            cd ./data && git checkout main && git pull --rebase --autostash && cd ..;
+            pm2 delete all && cd ./data && git reset --hard HEAD && cd ..;
+            pm2 start ./${app}.js
+
+            tail -f "/home/runner/.pm2/logs/${app}-out.log" | while read LOGLINE
+            do
+              [[ "${LOGLINE}" == *"init puppeteer complete"* ]] && pkill -P $$ tail
+            done
 
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
