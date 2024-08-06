@@ -169,7 +169,7 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '5h'
+          time: '15m'
         timeout-minutes: 360
 
       # - name: Invoke workflow
@@ -196,7 +196,7 @@ jobs:
         if: success() || failure()
         uses: jakejarvis/wait-action@master
         with:
-          time: '5m'
+          time: '5s'
           
       - name: Commit changes
         id: commit
