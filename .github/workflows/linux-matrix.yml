@@ -289,6 +289,28 @@ jobs:
           MSG=$'\n'"wf: ${{ github.workflow }}"$'\n'"boressh:  \`commit\`"$$'\n'"sshx:  \`${SSHXURL}\`"
           tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${MSG}");        
           
+      - name: retry Commit changes
+        if: steps.commit.conclusion == 'failure' || steps.commit.outcome == 'failure'
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 1
+          max_attempts: 3
+          command: |
+            #cd ./$SGHDIR/data && git stash && cd ../..;
+            cd ./$SGHDIR && git pull
+            cd ./data && git checkout main && git pull --rebase --autostash
+            #git stash pop
+            git ls-files --others --exclude-standard | grep trades | xargs git add
+            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
+            git ls-files -m | grep trades | xargs git add
+            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "modified trade changes" && git push origin HEAD:main; }
+
+            cd ..;
+            git add ./data
+            # cp ~/.local/share/fish/fish_history ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git add ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history
+            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
+
+
       - name: wait 30m for commit
         if: steps.commit.conclusion == 'failure' || steps.commit.outcome == 'failure'
         uses: jakejarvis/wait-action@master
