@@ -210,6 +210,7 @@ jobs:
             cd ./data && git checkout main && git pull --rebase --autostash && cd ..;
             pm2 delete all && cd ./data && git reset --hard HEAD && cd ..;
             pm2 start ./${app}.js
+            sleep 30s;
 
             tail -f "/home/runner/.pm2/logs/${app}-out.log" | while read LOGLINE
             do
