@@ -203,7 +203,7 @@ jobs:
           app: ${{ matrix.app }}
         uses: nick-fields/retry@v3
         with:
-          timeout_minutes: 1
+          timeout_minutes: 2
           max_attempts: 1
           command: |
             cd ./$SGHDIR && git pull
