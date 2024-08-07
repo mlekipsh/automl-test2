@@ -33,6 +33,7 @@ jobs:
 
     outputs:
       apps: ${{ steps.apps.outputs.apps }}
+      appscount: ${{ steps.apps.outputs.appscount }}
 
     steps:
       - name: Define Apps
@@ -203,7 +204,7 @@ jobs:
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 1
-          max_attempts: 2
+          max_attempts: 1
           command: |
             cd ./$SGHDIR && git pull
             cd ./data && git checkout main && git pull --rebase --autostash && cd ..;
