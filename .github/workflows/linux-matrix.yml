@@ -212,10 +212,12 @@ jobs:
             pm2 start ./${app}.js
             sleep 30s;
 
-            tail -f "/home/runner/.pm2/logs/${app}-out.log" | while read LOGLINE
-            do
-              [[ "${LOGLINE}" == *"init puppeteer complete"* ]] && pkill -P $$ tail
-            done
+            #tail -f "/home/runner/.pm2/logs/${app}-out.log" | while read LOGLINE
+            #do
+            #  [[ "${LOGLINE}" == *"init puppeteer complete"* ]] && pkill -P $$ tail
+            #done
+            grep -m 1 "complete" <(tail -f "/home/runner/.pm2/logs/${app}-out.log")
+            #killall -s SIGKILL tail
 
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
