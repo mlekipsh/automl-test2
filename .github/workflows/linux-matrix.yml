@@ -216,8 +216,9 @@ jobs:
             #do
             #  [[ "${LOGLINE}" == *"init puppeteer complete"* ]] && pkill -P $$ tail
             #done
-            grep -m 1 "complete" <(tail -f "/home/runner/.pm2/logs/${app}-out.log")
-            #killall -s SIGKILL tail
+            #grep -m 1 "complete" <(tail -f "/home/runner/.pm2/logs/${app}-out.log")
+            ( tail -f -n0 "/home/runner/.pm2/logs/${app}-out.log" & ) | grep -q "complete"
+            killall -s SIGKILL tail
             exit 0
 
       - name: Sleep for 5 hours
