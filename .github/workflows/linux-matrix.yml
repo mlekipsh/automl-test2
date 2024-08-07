@@ -218,6 +218,7 @@ jobs:
             #done
             grep -m 1 "complete" <(tail -f "/home/runner/.pm2/logs/${app}-out.log")
             #killall -s SIGKILL tail
+            exit 0
 
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
