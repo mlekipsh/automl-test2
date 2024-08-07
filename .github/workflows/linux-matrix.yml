@@ -269,14 +269,18 @@ jobs:
             cd ./data && git checkout main && git pull --rebase --autostash
             git push origin HEAD:main;
             
-            git ls-files --others --exclude-standard | grep trades | xargs git add
-            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
-            git ls-files -m | grep trades | xargs git add
-            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "modified trade changes" && git push origin HEAD:main; }
+            # git ls-files --others --exclude-standard | grep trades | xargs git add
+            # git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
+            # git ls-files -m | grep trades | xargs git add
+            # git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "modified trade changes" && git push origin HEAD:main; }
+            # cd ..;
+            # git add ./data
+            # git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
 
-            cd ..;
-            git add ./data
-            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
+            mkdir reports
+            git ls-files --others --exclude-standard | grep trades | xargs -I {} mv {} reports/.
+            git ls-files -m | grep trades | xargs -I {} mv {} reports/.
+            mv reports ../../reports; 
             
       - name: Upload reports' artifacts 
         if: success() || failure()
@@ -285,35 +289,7 @@ jobs:
           name: ${{ env.RUN_UNIQUE_ID }}_artifact_${{ matrix.app }}
           if-no-files-found: ignore
           path: reports
-          retention-days: 1     
-          
-      - name: inform telegram for commit
-        if: steps.commit.conclusion == 'failure' || steps.commit.outcome == 'failure'
-        run: |
-          MSG=$'\n'"wf: ${{ github.workflow }} - ${{ matrix.app }}"$'\n'"boressh:  \`commit\`"$$'\n'"sshx:  \`${SSHXURL}\`"
-          tmpvar=$(curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" -d "disable_web_page_preview=True" -d "parse_mode=Markdown" -d "chat_id=${TELEGRAM_CHAT_ID}" -d "text=${MSG}");        
-          
-      - name: retry Commit changes
-        if: steps.commit.conclusion == 'failure' || steps.commit.outcome == 'failure'
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 1
-          max_attempts: 3
-          command: |
-            #cd ./$SGHDIR/data && git stash && cd ../..;
-            cd ./$SGHDIR && git pull
-            cd ./data && git checkout main && git pull --rebase --autostash
-            #git stash pop
-            git ls-files --others --exclude-standard | grep trades | xargs git add
-            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
-            git ls-files -m | grep trades | xargs git add
-            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "modified trade changes" && git push origin HEAD:main; }
-
-            cd ..;
-            git add ./data
-            # cp ~/.local/share/fish/fish_history ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history && git add ./fixes/ghrunner-dotfiles/.local/share/fish/fish_history
-            git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
-
+          retention-days: 1
 
       - name: wait 30m for commit
         if: steps.commit.conclusion == 'failure' || steps.commit.outcome == 'failure'
@@ -325,12 +301,12 @@ jobs:
       #   if: success() || failure()
       #   uses: action-pack/cancel@v1
       
-  process-test-data:
+  process-build-data:
     runs-on: ubuntu-latest
-    needs: unit-test
+    needs: build
     if: success() || failure()
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Download reports' artifacts
         uses: actions/download-artifact@v3
@@ -338,51 +314,30 @@ jobs:
           path: downloaded_artifacts
           
       - name: Place reports' artifacts
-        run: rsync -av downloaded_artifacts/*/*/ unit_test_reports/
+        run: |
+          git config --global user.name "name"
+          git config --global user.email "email"
+          wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
+          gh auth setup-git
+          gh repo clone $SGHREPO && cd "$SGHDIR"
+
+          rsync -av ../downloaded_artifacts/*/*/ data/
+
       - name: Check reports existence
         id: check_files
         uses: andstor/file-existence-action@v1
         with:
-          files: 'unit_test_reports/**/test-*.xml'
-      - name: Import results to Xray
-        run: ls -R unit_test_reports/
-    
-  # workflow-keepalive:
-  #   runs-on: ubuntu-latest
-  #   #if: ${{ github.event_name == 'schedule' }}
-  #   permissions:
-  #     actions: write
-  #   strategy:
-  #     fail-fast: false
-  #   env:
-  #     GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
-  #   steps:
-  #     - uses: ahmadnassri/action-workflow-queue@v1
-      
-  #     - name: Sleep for 5 hours
-  #       uses: jakejarvis/wait-action@master
-  #       with:
-  #         time: '5h'
+          files: 'data/**/-*.json'
+      - name: Commit results
+        run: |
+          mv data/* ./$SGHDIR/data/. 
+          cd ./$SGHDIR && git pull
+          cd ./data && git checkout main && git pull --rebase --autostash
+          git ls-files --others --exclude-standard | grep trades | xargs git add
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
+          git ls-files -m | grep trades | xargs git add
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "modified trade changes" && git push origin HEAD:main; }
+          cd ..;
+          git add ./data
+          git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
           
-  #     - name: Invoke workflow
-  #       uses: benc-uk/workflow-dispatch@v1
-  #       with:
-  #         workflow: linux-matrix.yml
-  #         repo: ${{ github.repository }}
-  #         token: "${{ secrets.SGHTOKENLOCAL }}"
-    
-      # - name: Redispatch workflow
-      #   run: |
-      #      curl -L \
-      #       -X POST \
-      #       -H "Accept: application/vnd.github+json" \
-      #       -H "Authorization: Bearer $GH_TOKEN" \
-      #       -H "X-GitHub-Api-Version: 2022-11-28" \
-      #       https://api.github.com/repos/$GITHUB_REPOSITORY/dispatches \
-      #       -d '{"event_type":"repository_dispatch"'
-      #      curl -L \
-      #      -X POST \
-      #      -H "Accept: application/vnd.github+json" \
-      #      -H "Authorization: Bearer $GH_TOKEN" \
-      #      -H "X-GitHub-Api-Version: 2022-11-28" \
-      #      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/rerun
