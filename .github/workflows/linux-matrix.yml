@@ -379,16 +379,15 @@ jobs:
           gh repo clone $SGHREPO && cd "$SGHDIR"
 
           rsync -av ../downloaded_artifacts/*/* data/
-          mv ../downloaded_artifacts/*/* data/
+          # mv ../downloaded_artifacts/*/* data/
 
       - name: Check reports existence
         id: check_files
         uses: andstor/file-existence-action@v1
         with:
-          files: 'data/**/-*.json'
+          files: 'downloaded_artifacts/**/-*.json'
       - name: Commit results
         run: |
-          mv data/* ./$SGHDIR/data/. 
           cd ./$SGHDIR && git pull
           cd ./data && git checkout main && git pull --rebase --autostash
           git ls-files --others --exclude-standard | grep trades | xargs git add
