@@ -379,8 +379,9 @@ jobs:
           gh auth setup-git
           gh repo clone $SGHREPO && cd "$SGHDIR"
 
-          rsync -av ../downloaded_artifacts/*/* data/
+          # rsync -av ../downloaded_artifacts/*/* data/
           # mv ../downloaded_artifacts/*/* data/
+          cp ../downloaded_artifacts/*/* data/
 
       - name: Check reports existence
         id: check_files
