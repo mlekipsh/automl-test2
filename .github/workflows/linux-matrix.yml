@@ -265,9 +265,9 @@ jobs:
           max_attempts: ${{ needs.define-matrix.outputs.appscount }}
           command: |
             cd ./$SGHDIR && git pull
-            git push origin HEAD:main;
+            # git push origin HEAD:main;
             cd ./data && git checkout main && git pull --rebase --autostash
-            git push origin HEAD:main;
+            # git push origin HEAD:main;
             
             # git ls-files --others --exclude-standard | grep trades | xargs git add
             # git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
@@ -278,8 +278,8 @@ jobs:
             # git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
 
             mkdir reports
-            git ls-files --others --exclude-standard | grep trades | xargs -I {} mv {} reports/.
-            git ls-files -m | grep trades | xargs -I {} mv {} reports/.
+            git ls-files --others --exclude-standard | grep trades | xargs -I {} mv {} reports/
+            git ls-files -m | grep trades | xargs -I {} mv {} reports/
             mv reports ../../reports; 
             
       - name: Upload reports' artifacts 
