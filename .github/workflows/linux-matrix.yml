@@ -392,6 +392,7 @@ jobs:
           wget https://github.com/cli/cli/releases/download/v2.52.0/gh_2.52.0_linux_amd64.deb && sudo apt install ./gh_2.52.0_linux_amd64.deb && rm ./gh_2.52.0_linux_amd64.deb
           gh auth setup-git
           gh repo clone $SGHREPO && cd "$SGHDIR"
+          tmpvar=$(git submodule update --init --recursive && git config submodule.recurse true && git pull)
 
           rsync -av ../downloaded_artifacts/*/* data/
           # mv ../downloaded_artifacts/*/* data/
