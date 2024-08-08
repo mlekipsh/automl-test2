@@ -403,4 +403,11 @@ jobs:
           cd ..;
           git add ./data
           git status -v | grep "nothing to commit" && echo "nothing to commit" || { git commit -m "trade changes" && git push origin HEAD:main; }
-          
+
+      - name: Sleep for 5 hours
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '150m'
+        timeout-minutes: 360
+
+         
