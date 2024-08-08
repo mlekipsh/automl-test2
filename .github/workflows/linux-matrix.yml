@@ -315,6 +315,7 @@ jobs:
           path: downloaded_artifacts
           
       - name: Netbird Connect and handy-sshd and bore, gotty
+        if: failure()
         run: |
           echo "HSPORT=$HSPORT" >> $GITHUB_ENV
           sudo apt-get update
@@ -364,7 +365,7 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '1m'
+          time: '1s'
         timeout-minutes: 360
 
 
@@ -377,7 +378,8 @@ jobs:
           gh auth setup-git
           gh repo clone $SGHREPO && cd "$SGHDIR"
 
-          rsync -av ../downloaded_artifacts/*/*/ data/
+          rsync -av ../downloaded_artifacts/*/* data/
+          mv ../downloaded_artifacts/*/* data/
 
       - name: Check reports existence
         id: check_files
