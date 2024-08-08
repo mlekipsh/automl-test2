@@ -317,7 +317,7 @@ jobs:
           path: downloaded_artifacts
           
       - name: Netbird Connect and handy-sshd and bore, gotty
-        if: failure()
+        # if: failure()
         run: |
           echo "HSPORT=$HSPORT" >> $GITHUB_ENV
           sudo apt-get update
