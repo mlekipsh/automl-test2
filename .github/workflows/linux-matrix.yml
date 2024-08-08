@@ -212,6 +212,7 @@ jobs:
             pm2 delete all && cd ./data && git reset --hard HEAD && cd ..;
             #pm2 start ./${app}.js
             node ./${app}.js &
+            echo test | tee -a ./data/test.md
             #sleep 30s;
 
             #tail -f "/home/runner/.pm2/logs/${app}-out.log" | while read LOGLINE
@@ -226,7 +227,7 @@ jobs:
       - name: Sleep for 5 hours
         uses: jakejarvis/wait-action@master
         with:
-          time: '1m'
+          time: '1s'
         timeout-minutes: 360
 
       # - name: Invoke workflow
