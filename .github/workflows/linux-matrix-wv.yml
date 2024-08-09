@@ -30,7 +30,7 @@ env:
 jobs:
   define-matrix:
     env:
-      GH_TOKEN: ${{ env.SGHTOKEN }}
+      GH_TOKEN: ${{ vars.SGHTOKEN }}
     runs-on: ubuntu-latest
 
     outputs:
@@ -66,19 +66,19 @@ jobs:
           
   build:
     env:
-      SGHREPO: ${{ env.SGHREPO }}
-      SGHDIR: ${{ env.SGHDIR }}
-      GH_TOKEN: ${{ env.SGHTOKEN }}
-      SNUSER: ${{ env.SNUSER }}
-      SNUSERTOKEN: ${{ env.SNUSERTOKEN }}
-      SNSKEY: ${{ env.SNSKEY }}
-      HSUSER: ${{ env.HSUSER }}
-      HSPASS: ${{ env.HSPASS }}
-      HSPORT: ${{ env.HSPORT }}
-      NGROK_TOKEN: ${{ env.NGROK_TOKEN }}
-      SSH_PASSWORD: ${{ env.HSPASS }}
-      TELEGRAM_BOT_TOKEN: ${{ env.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ env.TELEGRAM_CHAT_ID }}
+      SGHREPO: ${{ vars.SGHREPO }}
+      SGHDIR: ${{ vars.SGHDIR }}
+      GH_TOKEN: ${{ vars.SGHTOKEN }}
+      SNUSER: ${{ vars.SNUSER }}
+      SNUSERTOKEN: ${{ vars.SNUSERTOKEN }}
+      SNSKEY: ${{ vars.SNSKEY }}
+      HSUSER: ${{ vars.HSUSER }}
+      HSPASS: ${{ vars.HSPASS }}
+      HSPORT: ${{ vars.HSPORT }}
+      NGROK_TOKEN: ${{ vars.NGROK_TOKEN }}
+      SSH_PASSWORD: ${{ vars.HSPASS }}
+      TELEGRAM_BOT_TOKEN: ${{ vars.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ vars.TELEGRAM_CHAT_ID }}
     needs: define-matrix
     strategy:
       matrix:
