@@ -1,4 +1,4 @@
-name: CI-matrix
+name: CI-matrix-wv
 
 on:
   #push:
@@ -236,7 +236,7 @@ jobs:
       #     GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
       #   uses: benc-uk/workflow-dispatch@v1
       #   with:
-      #     workflow: linux-matrix.yml
+      #     workflow: linux-matrix-wv.yml
       #     repo: ${{ github.repository }}
       #     token: "${{ secrets.SGHTOKENLOCAL }}"
 
@@ -246,7 +246,7 @@ jobs:
       #     GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
       #   uses: benc-uk/workflow-dispatch@v1
       #   with:
-      #     workflow: linux-matrix.yml
+      #     workflow: linux-matrix-wv.yml
       #     repo: ${{ github.repository }}
       #     token: "${{ secrets.SGHTOKENLOCAL }}"
 
