@@ -1,4 +1,4 @@
-name: CI-matrix-wv
+name: CI-matrix
 
 on:
   #push:
@@ -55,9 +55,9 @@ jobs:
           gh auth setup-git
           gh repo clone $SGHREPO && cd "$SGHDIR"
 
-          appnames=($(jq -r ".apps[].name" ./pm2-t-2024-withvolume.json | sed 's/^/"/;s/$/"/' | paste -sd "," -))      
+          appnames=($(jq -r ".apps[].name" ./pm2-t-2024??.json | sed 's/^/"/;s/$/"/' | paste -sd "," -))      
           
-          appscount=($(jq -r ".apps[].name" ./pm2-t-2024-withvolume.json | wc | awk '{print $1}'))  
+          appscount=($(jq -r ".apps[].name" ./pm2-t-2024??.json | wc | awk '{print $1}'))  
 
           echo "apps=[ $appnames ]" >> "$GITHUB_OUTPUT"
           echo "appscount=$appscount" >> "$GITHUB_OUTPUT"
@@ -67,6 +67,7 @@ jobs:
     strategy:
       matrix:
         app: ${{ fromJSON(needs.define-matrix.outputs.apps) }}
+      max-parallel: ${{ needs.define-matrix.outputs.appscount }}
       fail-fast: false
 
     runs-on: ubuntu-latest
@@ -246,7 +247,7 @@ jobs:
       #     GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
       #   uses: benc-uk/workflow-dispatch@v1
       #   with:
-      #     workflow: linux-matrix-wv.yml
+      #     workflow: linux-matrix.yml
       #     repo: ${{ github.repository }}
       #     token: "${{ secrets.SGHTOKENLOCAL }}"
 
@@ -256,7 +257,7 @@ jobs:
       #     GH_TOKEN: ${{ secrets.SGHTOKENLOCAL }}
       #   uses: benc-uk/workflow-dispatch@v1
       #   with:
-      #     workflow: linux-matrix-wv.yml
+      #     workflow: linux-matrix.yml
       #     repo: ${{ github.repository }}
       #     token: "${{ secrets.SGHTOKENLOCAL }}"
 
