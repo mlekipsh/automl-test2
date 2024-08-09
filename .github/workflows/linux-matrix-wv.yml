@@ -47,8 +47,6 @@ jobs:
           env-file: .env
 
       - name: Define Apps
-        env:
-          GH_TOKEN: ${{ vars.SGHTOKEN }}
         id: apps
         run: |
           git config --global user.name "name"
@@ -65,20 +63,6 @@ jobs:
           echo "appscount=$appscount" >> "$GITHUB_OUTPUT"
           
   build:
-    env:
-      SGHREPO: ${{ vars.SGHREPO }}
-      SGHDIR: ${{ vars.SGHDIR }}
-      GH_TOKEN: ${{ vars.SGHTOKEN }}
-      SNUSER: ${{ vars.SNUSER }}
-      SNUSERTOKEN: ${{ vars.SNUSERTOKEN }}
-      SNSKEY: ${{ vars.SNSKEY }}
-      HSUSER: ${{ vars.HSUSER }}
-      HSPASS: ${{ vars.HSPASS }}
-      HSPORT: ${{ vars.HSPORT }}
-      NGROK_TOKEN: ${{ vars.NGROK_TOKEN }}
-      SSH_PASSWORD: ${{ vars.HSPASS }}
-      TELEGRAM_BOT_TOKEN: ${{ vars.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ vars.TELEGRAM_CHAT_ID }}
     needs: define-matrix
     strategy:
       matrix:
