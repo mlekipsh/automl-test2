@@ -254,7 +254,7 @@ jobs:
         if: success() || failure()
         uses: jakejarvis/wait-action@master
         with:
-          time: '5m'
+          time: '5s'
           
       - name: Commit changes
         id: commit
