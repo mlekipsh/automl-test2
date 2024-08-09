@@ -29,6 +29,8 @@ env:
           
 jobs:
   define-matrix:
+    env:
+      GH_TOKEN: ${{ env.SGHTOKEN }}
     runs-on: ubuntu-latest
 
     outputs:
@@ -47,8 +49,6 @@ jobs:
           env-file: .env
 
       - name: Define Apps
-        env:
-          GH_TOKEN: ${{ env.SGHTOKEN }}
         id: apps
         run: |
           git config --global user.name "name"
